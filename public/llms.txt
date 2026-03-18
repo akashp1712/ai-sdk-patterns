@@ -1,0 +1,153 @@
+# AI SDK Patterns
+
+> Production-ready patterns for building AI applications with the Vercel AI SDK v6.
+
+## About
+
+AI SDK Patterns is an open-source collection of 23+ full-stack, production-ready patterns for chat, tool calling, agent workflows, and more. Each pattern includes complete Next.js source code (API routes + React UI) that you can download, install via the shadcn CLI, or copy directly.
+
+- Website: https://ai-sdk-patterns.vercel.app
+- GitHub: https://github.com/AkashKumar7902/ai-sdk-patterns
+- Stack: Next.js 16, AI SDK v6, React 19, shadcn/ui, Tailwind CSS v4
+- Provider-agnostic: Works with Anthropic Claude, OpenAI, and Google Gemini
+
+## Install a pattern
+
+```
+npx shadcn add https://ai-sdk-patterns.vercel.app/r/<pattern-id>
+```
+
+## Registry API
+
+Each pattern is available as a shadcn-compatible JSON endpoint:
+
+```
+GET https://ai-sdk-patterns.vercel.app/r/<pattern-id>
+```
+
+## Patterns
+
+### Core
+
+- text-generation: Basic non-streaming text generation with generateText. Submit a topic and get a generated paragraph.
+  - Difficulty: beginner
+  - URL: /patterns/text-generation
+
+- structured-output: Generate typed, validated JSON data using Zod schemas and the generateObject function.
+  - Difficulty: beginner
+  - URL: /patterns/structured-output
+
+- generative-ui: Stream React components from the server to the client using the AI SDK's streamUI function.
+  - Difficulty: intermediate
+  - URL: /patterns/generative-ui
+
+- image-generation: Generate images from text prompts using generateImage.
+  - Difficulty: intermediate
+  - URL: /patterns/image-generation
+
+- streaming-object: Stream structured JSON output in real-time using streamText with Output.object and a Zod schema.
+  - Difficulty: intermediate
+  - URL: /patterns/streaming-object
+
+- json-renderer: AI generates structured JSON data that's automatically rendered as interactive visual components.
+  - Difficulty: advanced
+  - URL: /patterns/json-renderer
+
+- code-artifact: AI-powered code generation with syntax highlighting and copy support.
+  - Difficulty: advanced
+  - URL: /patterns/code-artifact
+
+- form-generator: AI generates dynamic forms from natural language descriptions using generateObject with Zod schemas.
+  - Difficulty: advanced
+  - URL: /patterns/form-generator
+
+- csv-editor: AI-assisted tabular data editing. Paste CSV data, ask AI to transform, analyze, or clean it.
+  - Difficulty: advanced
+  - URL: /patterns/csv-editor
+
+### Chat
+
+- streaming-chat: Stream text responses from AI models in real-time using streamText and the useChat hook.
+  - Difficulty: beginner
+  - URL: /patterns/streaming-chat
+
+- markdown-chat: A polished chat interface with rich markdown rendering — code blocks with syntax highlighting, tables, lists, and more.
+  - Difficulty: intermediate
+  - URL: /patterns/markdown-chat
+
+- reasoning-display: Show the AI's chain-of-thought reasoning in a collapsible thinking section, then display the final answer.
+  - Difficulty: intermediate
+  - URL: /patterns/reasoning-display
+
+- chat-with-citations: A chat interface that includes inline source citations with expandable source cards.
+  - Difficulty: intermediate
+  - URL: /patterns/chat-with-citations
+
+### Agents
+
+- tool-calling: Let the AI model call functions and use external tools with the multi-step tool loop.
+  - Difficulty: intermediate
+  - URL: /patterns/tool-calling
+
+- multi-step-agent: Build an agent that orchestrates multiple tool calls in sequence using maxSteps and automatic tool result forwarding.
+  - Difficulty: advanced
+  - URL: /patterns/multi-step-agent
+
+- routing-agent: Routes user queries to specialized sub-agents based on content analysis.
+  - Difficulty: advanced
+  - URL: /patterns/routing-agent
+
+- orchestrator-agent: A parent agent that decomposes complex tasks, delegates subtasks to specialized child agents, and merges results.
+  - Difficulty: advanced
+  - URL: /patterns/orchestrator-agent
+
+- evaluator-optimizer: Generate-evaluate-iterate loop that self-improves output quality until a quality threshold is met.
+  - Difficulty: advanced
+  - URL: /patterns/evaluator-optimizer
+
+### Tools
+
+- web-search: Integrate third-party search APIs (Tavily, Exa) with the AI SDK to build a grounded search agent with source citations.
+  - Difficulty: intermediate
+  - URL: /patterns/web-search
+
+- rag-pipeline: Retrieval-Augmented Generation: embed documents, store in a vector database, and retrieve context for grounded AI responses.
+  - Difficulty: advanced
+  - URL: /patterns/rag-pipeline
+
+### Workflows
+
+- human-in-the-loop: Pause AI execution to get human approval before executing sensitive tool calls.
+  - Difficulty: intermediate
+  - URL: /patterns/human-in-the-loop
+
+- sequential-workflow: Chain multiple AI calls in sequence, passing the output of one step as input to the next.
+  - Difficulty: intermediate
+  - URL: /patterns/sequential-workflow
+
+- parallel-workflow: Run multiple AI calls concurrently with Promise.all and merge the results.
+  - Difficulty: advanced
+  - URL: /patterns/parallel-workflow
+
+## Composition Engine
+
+Select multiple patterns and generate an integrated Next.js app with shared routing, model helpers, and merged dependencies.
+
+- URL: /compose
+
+## Key APIs Used
+
+- streamText — Stream text responses from any provider
+- generateText — Non-streaming text generation
+- generateObject — Structured output with Zod schema validation
+- streamUI — Stream React server components
+- useChat — React hook for chat interfaces (from @ai-sdk/react)
+- DefaultChatTransport — Transport layer for useChat
+- tool() — Define callable tools with Zod parameter schemas
+- maxSteps — Enable multi-step agent tool loops
+
+## Providers
+
+- @ai-sdk/anthropic — Claude models (claude-sonnet-4-5, claude-haiku, etc.)
+- @ai-sdk/openai — OpenAI models (gpt-4o, gpt-4o-mini, dall-e-3, etc.)
+- @ai-sdk/google — Google models (gemini-2.0-flash, etc.)

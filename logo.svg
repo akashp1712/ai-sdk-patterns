@@ -1,0 +1,54 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="patternGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ef4444;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Main container circle -->
+  <circle cx="100" cy="100" r="90" fill="url(#bgGradient)" opacity="0.1"/>
+  <circle cx="100" cy="100" r="90" fill="none" stroke="url(#bgGradient)" stroke-width="2"/>
+  
+  <!-- AI brain/core -->
+  <path d="M100 40 Q120 50, 120 70 T100 90 Q80 80, 80 70 T100 40" fill="url(#bgGradient)" opacity="0.8"/>
+  
+  <!-- Pattern blocks surrounding the core -->
+  <!-- Top pattern -->
+  <rect x="85" y="25" width="30" height="15" rx="3" fill="url(#patternGradient)" opacity="0.7"/>
+  
+  <!-- Right pattern -->
+  <rect x="145" y="85" width="30" height="15" rx="3" fill="url(#patternGradient)" opacity="0.7" transform="rotate(90 160 92.5)"/>
+  
+  <!-- Bottom pattern -->
+  <rect x="85" y="160" width="30" height="15" rx="3" fill="url(#patternGradient)" opacity="0.7"/>
+  
+  <!-- Left pattern -->
+  <rect x="25" y="85" width="30" height="15" rx="3" fill="url(#patternGradient)" opacity="0.7" transform="rotate(90 40 92.5)"/>
+  
+  <!-- Connection lines -->
+  <line x1="100" y1="50" x2="100" y2="70" stroke="url(#bgGradient)" stroke-width="2" opacity="0.6"/>
+  <line x1="130" y1="100" x2="145" y2="100" stroke="url(#bgGradient)" stroke-width="2" opacity="0.6"/>
+  <line x1="100" y1="130" x2="100" y2="145" stroke="url(#bgGradient)" stroke-width="2" opacity="0.6"/>
+  <line x1="70" y1="100" x2="55" y2="100" stroke="url(#bgGradient)" stroke-width="2" opacity="0.6"/>
+  
+  <!-- Small dots representing individual patterns -->
+  <circle cx="100" cy="60" r="3" fill="#f59e0b"/>
+  <circle cx="140" cy="100" r="3" fill="#f59e0b"/>
+  <circle cx="100" cy="140" r="3" fill="#f59e0b"/>
+  <circle cx="60" cy="100" r="3" fill="#f59e0b"/>
+  
+  <!-- Center AI text -->
+  <text x="100" y="105" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="url(#bgGradient)" text-anchor="middle">AI</text>
+  
+  <!-- Decorative elements -->
+  <circle cx="75" cy="75" r="2" fill="#8b5cf6" opacity="0.5"/>
+  <circle cx="125" cy="75" r="2" fill="#8b5cf6" opacity="0.5"/>
+  <circle cx="75" cy="125" r="2" fill="#8b5cf6" opacity="0.5"/>
+  <circle cx="125" cy="125" r="2" fill="#8b5cf6" opacity="0.5"/>
+</svg>
