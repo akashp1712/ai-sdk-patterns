@@ -245,13 +245,13 @@ export function PatternActions({ pattern }: PatternActionsProps) {
               <p className="text-xs text-muted-foreground mb-3 uppercase tracking-wider font-medium">
                 Install via shadcn CLI
               </p>
-              <div className="flex items-start gap-2">
+              <div className="flex items-center gap-2">
                 <code className="flex-1 text-xs sm:text-sm font-mono bg-secondary rounded-lg px-4 py-3 text-foreground break-all">
                   npx shadcn add {process.env.NEXT_PUBLIC_SITE_URL || "https://ai-sdk-patterns.vercel.app"}/r/{pattern.id}
                 </code>
                 <button
                   onClick={copyCliCommand}
-                  className="rounded-lg bg-background border border-border/60 p-2 text-muted-foreground hover:text-foreground transition-colors"
+                  className="flex-shrink-0 rounded-md bg-muted hover:bg-muted/80 border border-border/50 p-2 text-muted-foreground hover:text-foreground transition-all duration-200"
                   title="Copy command"
                 >
                   {cliCopied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
