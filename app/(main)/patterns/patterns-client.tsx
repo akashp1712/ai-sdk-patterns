@@ -72,7 +72,7 @@ export function PatternsClient({ patterns }: { patterns: PatternMeta[] }) {
               "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors border",
               activeCategory === cat.id
                 ? "bg-foreground text-background border-foreground"
-                : "bg-card text-muted-foreground border-border/60 hover:text-foreground"
+                : "bg-card text-muted-foreground border-border hover:text-foreground"
             )}
           >
             {cat.label}
@@ -88,7 +88,7 @@ export function PatternsClient({ patterns }: { patterns: PatternMeta[] }) {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search patterns..."
-          className="w-full rounded-lg border border-border/60 bg-card pl-10 pr-4 py-2.5 text-sm placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-ring"
+          className="w-full rounded-lg border border-border bg-card pl-10 pr-4 py-2.5 text-sm placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-ring"
         />
       </div>
 
@@ -105,7 +105,7 @@ export function PatternsClient({ patterns }: { patterns: PatternMeta[] }) {
               <Link
                 key={pattern.id}
                 href={`/patterns/${pattern.id}`}
-                className="group rounded-xl border border-border/60 bg-card overflow-hidden transition-all duration-200 hover:border-border hover:shadow-md hover:shadow-black/5 dark:hover:shadow-black/20"
+                className="group rounded-xl border border-border bg-card overflow-hidden transition-all duration-200 hover:border-border hover:shadow-md hover:shadow-black/5 dark:hover:shadow-black/20"
               >
                 {illustration && (
                   <div className="h-36 border-b border-border/40 bg-muted/20 flex items-center justify-center overflow-hidden">
