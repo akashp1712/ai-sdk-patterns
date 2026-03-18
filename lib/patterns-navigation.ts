@@ -38,7 +38,7 @@ export const patternsNavigation: NavSection[] = [
     title: "Resources",
     items: [
       { title: "AI SDK Docs", href: "https://ai-sdk.dev", external: true },
-      { title: "GitHub", href: "https://github.com/AkashKumar7902/ai-sdk-patterns", external: true },
+      { title: "GitHub", href: "https://github.com/akashp1712/ai-sdk-patterns", external: true },
     ],
   },
 ];

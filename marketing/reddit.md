@@ -39,7 +39,7 @@ Select multiple patterns → generate one integrated Next.js app with shared rou
 
 100% free, 100% open source. No accounts, no paywalls.
 
-GitHub: github.com/AkashKumar7902/ai-sdk-patterns
+GitHub: github.com/akashp1712/ai-sdk-patterns
 Live: ai-sdk-patterns.vercel.app
 
 Would love feedback on which patterns to add next. Thinking about voice (Pipecat/LiveKit) and workflow integrations (Inngest/Trigger.dev).

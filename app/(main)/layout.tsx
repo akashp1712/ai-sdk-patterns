@@ -17,7 +17,7 @@ export default function MainLayout({
               <Link href="/patterns" className="hover:text-foreground transition-colors">Patterns</Link>
               <Link href="/compose" className="hover:text-foreground transition-colors">Compose</Link>
               <a href="https://ai-sdk.dev" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">AI SDK Docs</a>
-              <a href="https://github.com/AkashKumar7902/ai-sdk-patterns" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">GitHub</a>
+              <a href="https://github.com/akashp1712/ai-sdk-patterns" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">GitHub</a>
             </nav>
           </div>
           <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground/60">

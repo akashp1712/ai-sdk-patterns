@@ -30,7 +30,7 @@ The Composer is the part I'm most excited about. Select 3-4 patterns, click down
 Built with Next.js 16, AI SDK v6, shadcn/ui, and Tailwind CSS.
 
 Live: ai-sdk-patterns.vercel.app
-GitHub: github.com/AkashKumar7902/ai-sdk-patterns
+GitHub: github.com/akashp1712/ai-sdk-patterns
 
 What AI patterns would you want to see next? I'm exploring voice AI (Pipecat, LiveKit) and workflow engine integrations.
 

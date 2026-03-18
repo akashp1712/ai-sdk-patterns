@@ -58,7 +58,7 @@ export function Header() {
             </Link>
           ))}
           <a
-            href="https://github.com/AkashKumar7902/ai-sdk-patterns"
+            href="https://github.com/akashp1712/ai-sdk-patterns"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 px-3.5 py-2 rounded-md text-[14px] text-muted-foreground hover:text-foreground transition-colors"
@@ -109,7 +109,7 @@ export function Header() {
               </Link>
             ))}
             <a
-              href="https://github.com/AkashKumar7902/ai-sdk-patterns"
+              href="https://github.com/akashp1712/ai-sdk-patterns"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 px-3 py-2.5 rounded-md text-sm text-muted-foreground hover:text-foreground transition-colors"

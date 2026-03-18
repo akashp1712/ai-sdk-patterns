@@ -63,7 +63,7 @@ export default async function PatternPage({
     description: pattern.description,
     proficiencyLevel: pattern.difficulty === "beginner" ? "Beginner" : pattern.difficulty === "intermediate" ? "Expert" : "Advanced",
     keywords: pattern.tags.join(", "),
-    author: { "@type": "Person", name: "Akash Kumar", url: "https://github.com/AkashKumar7902" },
+    author: { "@type": "Person", name: "Akash Panchal", url: "https://github.com/akashp1712" },
   };
 
   return (

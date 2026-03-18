@@ -18,7 +18,7 @@ export default function HomePage() {
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Any",
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-    author: { "@type": "Person", name: "Akash Kumar", url: "https://github.com/AkashKumar7902" },
+    author: { "@type": "Person", name: "Akash Panchal", url: "https://github.com/akashp1712" },
   };
 
   return (

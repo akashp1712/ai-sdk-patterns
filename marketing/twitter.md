@@ -43,7 +43,7 @@ Patterns include:
 - Parallel Workflows
 - and 14 more...
 
-GitHub: github.com/AkashKumar7902/ai-sdk-patterns
+GitHub: github.com/akashp1712/ai-sdk-patterns
 
 ---
 

@@ -1,6 +1,6 @@
 # AI SDK Patterns
 
-![AI SDK Patterns Logo](logo.svg)
+![AI SDK Patterns](public/api-sdk-patterns.png)
 
 > 23+ open-source, composable AI SDK patterns. Install one or combine many into a full-stack Next.js app.
 
