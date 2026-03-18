@@ -153,6 +153,7 @@ interface PatternActionsProps {
 export function PatternActions({ pattern }: PatternActionsProps) {
   const [copied, setCopied] = useState(false);
   const [promptCopied, setPromptCopied] = useState(false);
+  const [cliCopied, setCliCopied] = useState(false);
   const [showInstall, setShowInstall] = useState(false);
   const [downloading, setDownloading] = useState(false);
 
@@ -171,6 +172,13 @@ export function PatternActions({ pattern }: PatternActionsProps) {
     await navigator.clipboard.writeText(prompt);
     setPromptCopied(true);
     setTimeout(() => setPromptCopied(false), 2000);
+  }
+
+  async function copyCliCommand() {
+    const cliCommand = `npx shadcn add ${process.env.NEXT_PUBLIC_SITE_URL || "https://ai-sdk-patterns.vercel.app"}/r/${pattern.id}`;
+    await navigator.clipboard.writeText(cliCommand);
+    setCliCopied(true);
+    setTimeout(() => setCliCopied(false), 2000);
   }
 
   async function downloadZip() {
@@ -237,9 +245,18 @@ export function PatternActions({ pattern }: PatternActionsProps) {
               <p className="text-xs text-muted-foreground mb-3 uppercase tracking-wider font-medium">
                 Install via shadcn CLI
               </p>
-              <code className="block text-xs sm:text-sm font-mono bg-secondary rounded-lg px-4 py-3 text-foreground break-all">
-                npx shadcn add {process.env.NEXT_PUBLIC_SITE_URL || "https://ai-sdk-patterns.vercel.app"}/r/{pattern.id}
-              </code>
+              <div className="flex items-start gap-2">
+                <code className="flex-1 text-xs sm:text-sm font-mono bg-secondary rounded-lg px-4 py-3 text-foreground break-all">
+                  npx shadcn add {process.env.NEXT_PUBLIC_SITE_URL || "https://ai-sdk-patterns.vercel.app"}/r/{pattern.id}
+                </code>
+                <button
+                  onClick={copyCliCommand}
+                  className="rounded-lg bg-background border border-border/60 p-2 text-muted-foreground hover:text-foreground transition-colors"
+                  title="Copy command"
+                >
+                  {cliCopied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                </button>
+              </div>
               <p className="text-xs text-muted-foreground mt-2">
                 Adds pattern files + dependencies to your project automatically.
               </p>

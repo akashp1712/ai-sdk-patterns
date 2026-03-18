@@ -45,6 +45,7 @@ export async function GET(
   // Map pattern files to shadcn registry format
   const registryFiles = pattern.files.map((file) => ({
     path: file.path,
+    target: file.path,
     content: file.content,
     type: "registry:file" as const,
   }));
