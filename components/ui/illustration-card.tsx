@@ -1,4 +1,5 @@
 import { type ReactNode } from "react";
+import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 
 interface IllustrationCardProps {
@@ -24,26 +25,34 @@ export function IllustrationCard({
   const wrapperProps = href ? { href } : {};
 
   return (
-    <Wrapper
-      {...wrapperProps}
-      className={cn(
-        "group bg-background flex flex-col transition-colors hover:bg-accent/30 rounded-xl border border-border/60 overflow-hidden",
-        className
-      )}
+    <motion.div
+      whileHover={{ y: -4, scale: 1.02 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
     >
-      <div className={cn("p-6 border-b border-border/20", illustrationHeight)}>
-        {illustration}
-      </div>
-      <div className="p-6 flex flex-col flex-1">
-        <h3 className="text-base font-semibold text-foreground mb-1.5">
-          {title}
-        </h3>
-        <p className="text-sm text-muted-foreground leading-relaxed flex-1">
-          {description}
-        </p>
-        {footer && <div className="mt-3">{footer}</div>}
-      </div>
-    </Wrapper>
+      <Wrapper
+        {...wrapperProps}
+        className={cn(
+          "group bg-background flex flex-col transition-all duration-300 hover:bg-accent/30 rounded-xl border border-border/60 overflow-hidden",
+          "hover:shadow-lg hover:shadow-primary/5 hover:border-primary/20",
+          "bg-linear-to-br from-white to-gray-50/60 dark:from-gray-900 dark:to-gray-800/60",
+          className
+        )}
+      >
+        <div className={cn("p-6 border-b border-border/20", illustrationHeight, "relative overflow-hidden")}>
+          <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          {illustration}
+        </div>
+        <div className="p-6 flex flex-col flex-1">
+          <h3 className="text-base font-semibold text-foreground mb-1.5 group-hover:text-primary transition-colors duration-300">
+            {title}
+          </h3>
+          <p className="text-sm text-muted-foreground leading-relaxed flex-1">
+            {description}
+          </p>
+          {footer && <div className="mt-3">{footer}</div>}
+        </div>
+      </Wrapper>
+    </motion.div>
   );
 }
 

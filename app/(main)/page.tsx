@@ -30,7 +30,7 @@ export default function HomePage() {
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-border/60">
         <HeroGrid />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/0 via-background/50 to-background pointer-events-none" />
+        <div className="absolute inset-0 bg-linear-to-b from-background/0 via-background/50 to-background pointer-events-none" />
 
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-20 pb-16 sm:pt-36 sm:pb-28">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -133,11 +133,11 @@ export default function HomePage() {
       <section className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
         <div className="text-center mb-14">
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-4">
-            Patterns that compose into apps
+            Interactive feature showcase
           </h2>
           <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto leading-relaxed">
-            Each pattern is a complete, working example. Pick several, and the Composer
-            merges them into one integrated Next.js app with shared routing and models.
+            Explore core AI SDK capabilities with animated examples. Click any card
+            to see the actual pattern implementation.
           </p>
         </div>
         <FeaturesBento />
