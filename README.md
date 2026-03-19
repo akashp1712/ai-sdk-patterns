@@ -4,14 +4,14 @@
 
 > 23+ open-source, composable AI SDK patterns. Install one or combine many into a full-stack Next.js app.
 
-**[ai-sdk-patterns.vercel.app](https://ai-sdk-patterns.vercel.app)**
+**[ai-sdk-patterns.dev](https://ai-sdk-patterns.dev)**
 
 ## What is this?
 
 A collection of production-ready AI SDK v6 patterns — chat, agents, tool calling, RAG, workflows — that you can:
 
 1. **Browse** — Read the code, see static previews, understand the pattern
-2. **Install** — `npx shadcn add https://ai-sdk-patterns.vercel.app/r/streaming-chat`
+2. **Install** — `npx shadcn add ${process.env.NEXT_PUBLIC_SITE_URL || "https://ai-sdk-patterns.vercel.app"}/r/streaming-chat`
 3. **Download** — Get a complete working Next.js app as a ZIP
 4. **Compose** — Pick multiple patterns, generate one integrated app with shared routing and merged dependencies
 5. **Prompt** — Copy a ready-made prompt for Claude, Cursor, or Windsurf to integrate the pattern into your project
@@ -66,14 +66,14 @@ A collection of production-ready AI SDK v6 patterns — chat, agents, tool calli
 Each pattern is a shadcn-compatible registry item. Install into any existing Next.js project:
 
 ```bash
-npx shadcn add https://ai-sdk-patterns.vercel.app/r/streaming-chat
+npx shadcn add ${process.env.NEXT_PUBLIC_SITE_URL || "https://ai-sdk-patterns.vercel.app"}/r/streaming-chat
 ```
 
 This installs the pattern files + all required dependencies (`ai`, `@ai-sdk/react`, `zod`, etc.) automatically.
 
 ## Compose Multiple Patterns
 
-Visit [ai-sdk-patterns.vercel.app/compose](https://ai-sdk-patterns.vercel.app/compose) to:
+Visit [${process.env.NEXT_PUBLIC_SITE_URL || "ai-sdk-patterns.vercel.app"}/compose](https://${process.env.NEXT_PUBLIC_SITE_URL || "ai-sdk-patterns.vercel.app"}/compose) to:
 
 1. Select multiple patterns
 2. Preview the generated project structure

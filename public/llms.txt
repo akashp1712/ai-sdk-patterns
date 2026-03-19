@@ -6,7 +6,7 @@
 
 AI SDK Patterns is an open-source collection of 23+ full-stack, production-ready patterns for chat, tool calling, agent workflows, and more. Each pattern includes complete Next.js source code (API routes + React UI) that you can download, install via the shadcn CLI, or copy directly.
 
-- Website: https://ai-sdk-patterns.vercel.app
+- Website: https://ai-sdk-patterns.dev
 - GitHub: https://github.com/akashp1712/ai-sdk-patterns
 - Stack: Next.js 16, AI SDK v6, React 19, shadcn/ui, Tailwind CSS v4
 - Provider-agnostic: Works with Anthropic Claude, OpenAI, and Google Gemini
@@ -14,7 +14,7 @@ AI SDK Patterns is an open-source collection of 23+ full-stack, production-ready
 ## Install a pattern
 
 ```
-npx shadcn add https://ai-sdk-patterns.vercel.app/r/<pattern-id>
+npx shadcn add ${process.env.NEXT_PUBLIC_SITE_URL || "https://ai-sdk-patterns.vercel.app"}/r/<pattern-id>
 ```
 
 ## Registry API
@@ -22,7 +22,7 @@ npx shadcn add https://ai-sdk-patterns.vercel.app/r/<pattern-id>
 Each pattern is available as a shadcn-compatible JSON endpoint:
 
 ```
-GET https://ai-sdk-patterns.vercel.app/r/<pattern-id>
+GET https://${process.env.NEXT_PUBLIC_SITE_URL || "ai-sdk-patterns.vercel.app"}/r/<pattern-id>
 ```
 
 ## Patterns

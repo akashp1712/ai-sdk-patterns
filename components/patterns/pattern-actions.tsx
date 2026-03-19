@@ -106,7 +106,7 @@ pnpm dev
 ## Alternative: Install via registry
 
 \`\`\`bash
-npx shadcn add ${process.env.NEXT_PUBLIC_SITE_URL || "https://ai-sdk-patterns.vercel.app"}/r/${pattern.id}
+npx shadcn add ${process.env.NEXT_PUBLIC_SITE_URL || "https://ai-sdk-patterns.dev"}/r/${pattern.id}
 \`\`\`
 
 ---
@@ -175,7 +175,7 @@ export function PatternActions({ pattern }: PatternActionsProps) {
   }
 
   async function copyCliCommand() {
-    const cliCommand = `npx shadcn add ${process.env.NEXT_PUBLIC_SITE_URL || "https://ai-sdk-patterns.vercel.app"}/r/${pattern.id}`;
+    const cliCommand = `npx shadcn add ${process.env.NEXT_PUBLIC_SITE_URL || "https://ai-sdk-patterns.dev"}/r/${pattern.id}`;
     await navigator.clipboard.writeText(cliCommand);
     setCliCopied(true);
     setTimeout(() => setCliCopied(false), 2000);

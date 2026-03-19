@@ -6,7 +6,7 @@
 
 AI SDK Patterns is an open-source collection of 23+ composable AI SDK v6 patterns. Users can browse, install via shadcn CLI, download as ZIP, or compose multiple patterns into a single integrated Next.js app.
 
-**Live site**: ai-sdk-patterns.vercel.app
+**Live site**: ai-sdk-patterns.dev
 
 ## Tech Stack
 
@@ -116,7 +116,7 @@ pnpm lint         # ESLint
 ## Environment Variables
 
 ```bash
-NEXT_PUBLIC_SITE_URL=https://ai-sdk-patterns.vercel.app  # Required for registry URLs
+NEXT_PUBLIC_SITE_URL=https://ai-sdk-patterns.dev  # Required for registry URLs
 ENABLE_AI_ROUTES=true                                      # Optional: enable AI API routes
 DEFAULT_MODEL=anthropic:claude-sonnet-4-5                  # Optional: default AI model
 ANTHROPIC_API_KEY=                                         # Optional: for live AI routes

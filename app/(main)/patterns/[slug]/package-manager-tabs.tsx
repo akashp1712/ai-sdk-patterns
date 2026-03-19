@@ -12,10 +12,10 @@ export function PackageManagerTabs({ patternId }: PackageManagerTabsProps) {
   
   // MagicUI exact commands for each package manager
   const commands = {
-    pnpm: `pnpm dlx shadcn@latest add https://ai-sdk-patterns.vercel.app/r/${patternId}`,
-    npm: `npx shadcn@latest add https://ai-sdk-patterns.vercel.app/r/${patternId}`,
-    yarn: `yarn shadcn@latest add https://ai-sdk-patterns.vercel.app/r/${patternId}`,
-    bun: `bunx --bun shadcn@latest add https://ai-sdk-patterns.vercel.app/r/${patternId}`
+    pnpm: `pnpm dlx shadcn@latest add ${process.env.NEXT_PUBLIC_SITE_URL || "https://ai-sdk-patterns.vercel.app"}/r/${patternId}`,
+    npm: `npx shadcn@latest add ${process.env.NEXT_PUBLIC_SITE_URL || "https://ai-sdk-patterns.vercel.app"}/r/${patternId}`,
+    yarn: `yarn shadcn@latest add ${process.env.NEXT_PUBLIC_SITE_URL || "https://ai-sdk-patterns.vercel.app"}/r/${patternId}`,
+    bun: `bunx --bun shadcn@latest add ${process.env.NEXT_PUBLIC_SITE_URL || "https://ai-sdk-patterns.vercel.app"}/r/${patternId}`
   };
 
   const packageManagers = [

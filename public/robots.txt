@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ai-sdk-patterns.vercel.app/sitemap.xml
+Sitemap: https://ai-sdk-patterns.dev/sitemap.xml
