@@ -34,11 +34,14 @@ app/
 
 lib/
   patterns.ts          # ALL 23 pattern definitions with inline source code
+  pattern-use-cases.ts # Pattern-specific use cases data and utilities
   compose.ts           # Composition engine — merges patterns into one app
+  model.ts             # AI model helper for provider-agnostic usage
+  patterns-navigation.ts # Navigation data for patterns page
   utils.ts             # cn() utility
 
 components/
-  patterns/            # Pattern-related components (actions, illustrations, code viewer)
+  patterns/            # Pattern-related components (actions, illustrations, code viewer, interactive previews)
   ui/                  # shadcn/ui components
   header.tsx           # Site header with nav + Cmd+K search
   command-search.tsx   # Cmd+K search dialog
@@ -120,6 +123,24 @@ ANTHROPIC_API_KEY=                                         # Optional: for live 
 OPENAI_API_KEY=                                            # Optional: for live AI routes
 GOOGLE_GENERATIVE_AI_API_KEY=                              # Optional: for live AI routes
 ```
+
+## Recent UI/UX Enhancements
+
+### Pattern Details Page Improvements (March 2026)
+- **Enhanced Use Cases**: Added pattern-specific use cases for all 23 patterns with practical real-world applications
+- **Package Manager Tabs**: Implemented tabbed interface with distinct commands for pnpm, npm, yarn, bun
+- **Visible Copy Buttons**: Always-visible copy buttons with proper borders and styling
+- **CLI Command Fix**: Fixed command wrapping with truncate and tooltip for full command display
+- **Clean Layout**: Removed redundant right sidebar for better focus
+- **Installation Options**: Clear "Option 1: Install via CLI" and "Option 2: Copy or Download" structure
+- **Hydration Fix**: Moved `suppressHydrationWarning` from `<html>` to `<body>` element
+- **Code Organization**: Refactored use cases to separate `lib/pattern-use-cases.ts` file
+
+### Design System
+- **AI SDK Documentation Style**: Clean borders, proper spacing, monochrome aesthetic
+- **Responsive Design**: Mobile-first approach with desktop enhancements
+- **Accessibility**: Proper semantic HTML and ARIA support
+- **Performance**: Optimized loading states and smooth transitions
 
 ## Common Pitfalls
 
