@@ -376,6 +376,71 @@ export function CsvEditorIll() {
   );
 }
 
+export function DurableChatAgentIll() {
+  return (
+    <IllustrationCanvas>
+      <div className="flex items-center gap-2">
+        <NodeCircle label="AI" size="md" />
+        <FanOutConnector count={2} />
+        <div className="flex flex-col gap-1">
+          <Pill color="sky" mono>calc()</Pill>
+          <Pill color="emerald" mono>search()</Pill>
+        </div>
+      </div>
+    </IllustrationCanvas>
+  );
+}
+
+export function WorkflowApprovalIll() {
+  return (
+    <IllustrationCanvas>
+      <div className="flex items-center gap-2">
+        <NodeCircle label="AI" size="md" />
+        <ArrowConnector />
+        <MiniCard className="px-2 py-1 text-[7px] text-amber-500/80 border-amber-500/30 bg-amber-500/15">
+          ⏸️ Paused
+        </MiniCard>
+        <ArrowConnector />
+        <div className="flex gap-1.5">
+          <Pill color="emerald">✓ Approve</Pill>
+          <Pill color="red">✕ Reject</Pill>
+        </div>
+      </div>
+    </IllustrationCanvas>
+  );
+}
+
+export function ScheduledWorkflowIll() {
+  return (
+    <IllustrationCanvas>
+      <div className="flex items-center gap-2">
+        <NodeCircle label="Start" size="sm" />
+        <ArrowConnector />
+        <MiniCard className="px-2 py-1 text-[7px] text-blue-500/80 border-blue-500/30 bg-blue-500/15">
+          ⏰ Sleep
+        </MiniCard>
+        <ArrowConnector />
+        <NodeCircle label="Run" size="sm" />
+      </div>
+    </IllustrationCanvas>
+  );
+}
+
+export function RefinementLoopIll() {
+  return (
+    <IllustrationCanvas>
+      <StepChain
+        steps={[
+          { label: "G", color: "sky" },
+          { label: "E", color: "amber" },
+          { label: "O", color: "emerald" },
+        ]}
+        label="generate → evaluate → refine"
+      />
+    </IllustrationCanvas>
+  );
+}
+
 // ── Registry ────────────────────────────────────────────────────────
 // Add new pattern illustrations here. Key = pattern id from lib/patterns.ts
 
@@ -403,6 +468,10 @@ const illustrationMap: Record<string, React.ReactNode> = {
   "chat-with-citations": <ChatWithCitationsIll />,
   "form-generator": <FormGeneratorIll />,
   "csv-editor": <CsvEditorIll />,
+  "durable-chat-agent": <DurableChatAgentIll />,
+  "workflow-approval": <WorkflowApprovalIll />,
+  "scheduled-workflow": <ScheduledWorkflowIll />,
+  "refinement-loop": <RefinementLoopIll />,
 };
 
 export function getPatternIllustration(patternId: string): React.ReactNode {

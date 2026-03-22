@@ -906,7 +906,142 @@ function CsvEditorPreview() {
   );
 }
 
-// ── Registry ──────────────────────────────────────────────────────
+function DurableChatAgentPreview() {
+  return (
+    <PreviewShell>
+      <div className="flex-1 overflow-y-auto p-4 space-y-3">
+        <ChatMessage role="user">Calculate 15% tip on $85 and search for current AI trends</ChatMessage>
+        <div className="flex justify-start">
+          <div className="max-w-[85%] bg-muted rounded-lg px-4 py-3 text-sm space-y-3">
+            <ToolCallCard name="calculator({ expression: '85 * 0.15' })" result="12.75" />
+            <ToolCallCard name="webSearch({ query: 'AI trends 2025' })" result="Found 5 sources" />
+            <div className="leading-relaxed">
+              Your tip is $12.75, making the total $97.75. Current AI trends include increased adoption of multi-modal models and edge AI deployment.
+            </div>
+            <div className="text-xs text-muted-foreground border-t border-border/60 pt-2 mt-2">
+              <div className="flex items-center gap-2">
+                <div className="h-2 w-2 rounded-full bg-green-500" />
+                <span>Session persisted</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ChatInput />
+    </PreviewShell>
+  );
+}
+
+function WorkflowApprovalPreview() {
+  return (
+    <PreviewShell>
+      <div className="flex-1 overflow-y-auto p-4 space-y-3">
+        <ChatMessage role="user">Generate email draft for team meeting invitation</ChatMessage>
+        <div className="flex justify-start">
+          <div className="max-w-[85%] space-y-2">
+            <div className="bg-muted rounded-lg px-4 py-3 text-sm">
+              Email draft generated and waiting for approval...
+            </div>
+            {/* Approval card */}
+            <div className="max-w-[85%] rounded-lg border border-border bg-card p-4 space-y-3">
+              <div className="flex items-center gap-2 text-xs font-medium text-foreground">
+                <svg className="h-4 w-4 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                </svg>
+                Workflow paused for approval
+              </div>
+              <div className="text-xs space-y-1.5 text-muted-foreground">
+                <div><span>Action:</span> <span className="text-foreground font-medium">sendEmail</span></div>
+                <div><span>To:</span> <span className="text-foreground">team@company.com</span></div>
+                <div><span>Subject:</span> <span className="text-foreground">Q1 Meeting Invitation</span></div>
+                <div className="line-clamp-2">Body: Hi team, let's schedule our Q1 planning meeting...</div>
+              </div>
+              <div className="flex gap-2 pt-1">
+                <div className="rounded-md bg-foreground text-background px-4 py-1.5 text-xs font-medium">Approve</div>
+                <div className="rounded-md border border-border/60 px-4 py-1.5 text-xs font-medium text-muted-foreground">Reject</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ChatInput />
+    </PreviewShell>
+  );
+}
+
+function ScheduledWorkflowPreview() {
+  return (
+    <PreviewShell>
+      <div className="flex-1 p-6 space-y-5 overflow-y-auto">
+        <div>
+          <label className="text-sm font-medium mb-2 block">Schedule weekly report</label>
+          <div className="rounded-md border border-border/60 bg-background px-3 py-2 text-sm text-muted-foreground">
+            User ID: user-123
+          </div>
+        </div>
+        <div className="rounded-md bg-foreground text-background px-4 py-2 text-sm font-medium w-fit">
+          Schedule Workflow
+        </div>
+        <div className="rounded-lg border border-border/60 bg-card p-4 text-sm leading-relaxed">
+          <div className="text-xs text-muted-foreground mb-3">Workflow Status</div>
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <div className="h-2 w-2 rounded-full bg-green-500" />
+              <span className="text-xs">Started</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="h-2 w-2 rounded-full bg-yellow-500" />
+              <span className="text-xs">Sleeping for 7 days...</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="h-2 w-2 rounded-full bg-blue-500" />
+              <span className="text-xs">Will resume on 2025-03-30</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </PreviewShell>
+  );
+}
+
+function RefinementLoopPreview() {
+  return (
+    <PreviewShell>
+      <div className="flex-1 p-6 space-y-5 overflow-y-auto">
+        <div>
+          <label className="text-sm font-medium mb-2 block">Content to refine</label>
+          <div className="rounded-md border border-border/60 bg-background px-3 py-2 text-sm text-muted-foreground">
+            Product description for wireless earbuds
+          </div>
+        </div>
+        <div className="rounded-md bg-foreground text-background px-4 py-2 text-sm font-medium w-fit">
+          Start Refinement Loop
+        </div>
+        <div className="space-y-3">
+          {[
+            { iteration: 1, score: "6/10", feedback: "Too generic, lacks specific features" },
+            { iteration: 2, score: "8/10", feedback: "Good detail, needs stronger CTA" },
+            { iteration: 3, score: "9/10", feedback: "Meets quality threshold" },
+          ].map((round) => (
+            <div key={round.iteration} className="rounded border border-border/60 bg-card p-3 text-xs">
+              <div className="flex items-center justify-between mb-1">
+                <span className="font-medium text-foreground">Iteration {round.iteration}</span>
+                <span className="text-muted-foreground font-mono">{round.score}</span>
+              </div>
+              <div className="text-muted-foreground">{round.feedback}</div>
+            </div>
+          ))}
+          <div className="rounded-lg border border-border/60 bg-card p-4 text-sm leading-relaxed">
+            <div className="text-xs text-muted-foreground mb-2">Final output (9/10)</div>
+            Experience immersive sound with our AirPods Pro — featuring active noise cancellation, spatial audio, and 30-hour battery life. Sweat-resistant, seamlessly integrated with all your devices.
+          </div>
+        </div>
+      </div>
+    </PreviewShell>
+  );
+}
+
+// ── Registry ──────────────────────────────────────────────
 
 const previewMap: Record<string, React.ReactNode> = {
   "streaming-chat": <StreamingChatPreview />,
@@ -932,6 +1067,10 @@ const previewMap: Record<string, React.ReactNode> = {
   "chat-with-citations": <ChatWithCitationsPreview />,
   "form-generator": <FormGeneratorPreview />,
   "csv-editor": <CsvEditorPreview />,
+  "durable-chat-agent": <DurableChatAgentPreview />,
+  "workflow-approval": <WorkflowApprovalPreview />,
+  "scheduled-workflow": <ScheduledWorkflowPreview />,
+  "refinement-loop": <RefinementLoopPreview />,
 };
 
 export function getPatternPreview(patternId: string): React.ReactNode | null {

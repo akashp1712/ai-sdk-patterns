@@ -4216,6 +4216,414 @@ Rules:
       },
     ],
   },
+  {
+    id: "durable-chat-agent",
+    title: "Durable Multi-Turn Chat Agent",
+    description:
+      "Stateful conversation agent with Workflow DevKit that persists messages across pauses/resumes, calls tools, and streams responses using DurableAgent.",
+    category: "workflows",
+    difficulty: "advanced",
+    tags: ["workflow", "durable", "stateful", "tool-calling", "workflow-devkit"],
+    relatedPatterns: ["tool-calling", "human-in-the-loop"],
+    files: [
+      {
+        path: "app/workflows/chat-agent.ts",
+        lang: "typescript",
+        content: `"use server";
+
+import { openai } from "@ai-sdk/openai";
+import { generateText, tool } from "ai";
+import { sleep, defineHook } from "workflow";
+import { z } from "zod";
+
+// Example tools (expand as needed)
+const calculator = tool({
+  description: "Calculate math expressions",
+  parameters: z.object({ expression: z.string() }),
+  execute: async ({ expression }) => eval(expression).toString(), // ⚠️ use safe eval in prod
+});
+
+const webSearch = tool({
+  description: "Search the web for current info",
+  parameters: z.object({ query: z.string() }),
+  execute: async ({ query }) => \`Mock search results for "\${query}"...\`, // replace with real search
+});
+
+export async function durableChatAgent({
+  sessionId,
+  userMessage,
+  previousMessages = [],
+}: {
+  sessionId: string;
+  userMessage: string;
+  previousMessages: { role: "user" | "assistant"; content: string }[];
+}) {
+  "use workflow";
+
+  // Full message history is persisted automatically via workflow replay
+  const messages = [...previousMessages, { role: "user" as const, content: userMessage }];
+
+  // Optional: sleep if you want delayed response simulation
+  // await sleep("30 seconds");
+
+  const result = await generateText({
+    model: openai("gpt-4o-mini"),
+    messages,
+    tools: { calculator, webSearch },
+    maxSteps: 5, // prevent infinite loops
+  });
+
+  const response = result.text;
+  const toolResults = result.toolResults; // if any tools were called
+
+  // Add assistant response to history for next turn
+  messages.push({ role: "assistant" as const, content: response });
+
+  return {
+    response,
+    updatedHistory: messages,
+    toolResults,
+  };
+}`,
+      },
+      {
+        path: "app/api/chat/route.ts",
+        lang: "typescript",
+        content: `import { createStreamableValue } from "ai/rsc";
+import { durableChatAgent } from "@/app/workflows/chat-agent";
+import { sleep } from "workflow";
+
+export async function POST(req: Request) {
+  const { sessionId, userMessage, previousMessages } = await req.json();
+  
+  const stream = createStreamableValue();
+  
+  // Start the workflow in background
+  (async () => {
+    try {
+      const result = await durableChatAgent({
+        sessionId,
+        userMessage,
+        previousMessages,
+      });
+      
+      stream.done(result);
+    } catch (error) {
+      stream.error(error);
+    }
+  })();
+
+  return new Response(stream.value);
+}`,
+      },
+      {
+        path: "lib/model.ts",
+        lang: "typescript",
+        content: `import { anthropic } from "@ai-sdk/anthropic";
+import { openai } from "@ai-sdk/openai";
+import { google } from "@ai-sdk/google";
+
+export function getModel(id?: string) {
+  const modelId =
+    id || process.env.DEFAULT_MODEL || "anthropic:claude-sonnet-4-5";
+  const [provider, ...rest] = modelId.split(":");
+  const model = rest.join(":");
+
+  switch (provider) {
+    case "anthropic":
+      return anthropic(model);
+    case "openai":
+      return openai(model);
+    case "google":
+      return google(model);
+    default:
+      return anthropic(model);
+  }
+}`,
+      },
+    ],
+  },
+  {
+    id: "workflow-approval",
+    title: "Human-in-the-Loop Approval Workflow",
+    description:
+      "AI generates content, pauses via workflow hook until human approves/rejects via webhook. On approval, sends/finalizes; on reject, refines with feedback.",
+    category: "workflows",
+    difficulty: "advanced",
+    tags: ["workflow", "approval", "human-in-the-loop", "hooks", "workflow-devkit"],
+    relatedPatterns: ["human-in-the-loop", "durable-chat-agent"],
+    files: [
+      {
+        path: "app/workflows/email-approval.ts",
+        lang: "typescript",
+        content: `import { openai } from "@ai-sdk/openai";
+import { generateObject } from "ai";
+import { defineHook, FatalError } from "workflow";
+import { z } from "zod";
+
+const approvalHook = defineHook<{
+  decision: "approved" | "rejected";
+  feedback?: string;
+}>();
+
+export async function emailApprovalWorkflow({
+  topic,
+  recipient,
+  hookToken,
+}: {
+  topic: string;
+  recipient: string;
+  hookToken: string; // unique per run, e.g. crypto.randomUUID()
+}) {
+  "use workflow";
+
+  // Step 1: Generate draft
+  const { object: draft } = await generateObject({
+    model: openai("gpt-4o"),
+    schema: z.object({
+      subject: z.string(),
+      body: z.string(),
+    }),
+    prompt: \`Write a professional email about \${topic} to \${recipient}.\`,
+  });
+
+  // Create hook instance and pause here
+  const hook = approvalHook.create({ token: hookToken });
+
+  // Workflow suspends — no compute used while waiting
+  const { decision, feedback } = await hook; // resumes when POSTed to webhook URL
+
+  if (decision === "rejected") {
+    // Refine with feedback (loop or one-shot)
+    const refined = await generateObject({
+      model: openai("gpt-4o-mini"),
+      schema: z.object({ subject: z.string(), body: z.string() }),
+      prompt: \`Refine this email draft based on feedback: \${feedback}\\n\\nOriginal:\\n\${draft.subject}\\n\${draft.body}\`,
+    });
+    return { status: "refined", draft: refined.object };
+  }
+
+  // Approved → send or finalize
+  // await sendEmail(draft); // your send step
+
+  return { status: "approved", draft };
+}`,
+      },
+      {
+        path: "app/api/approval/webhook/[token]/route.ts",
+        lang: "typescript",
+        content: `import { NextRequest, NextResponse } from "next/server";
+import { approvalHook } from "@/app/workflows/email-approval";
+
+export async function POST(
+  req: NextRequest,
+  { params }: { params: { token: string } }
+) {
+  const { decision, feedback } = await req.json();
+  
+  // Resume the workflow with the decision
+  await approvalHook.resume(params.token, { decision, feedback });
+  
+  return NextResponse.json({ success: true });
+}`,
+      },
+      {
+        path: "app/api/approval/start/route.ts",
+        lang: "typescript",
+        content: `import { NextResponse } from "next/server";
+import { emailApprovalWorkflow } from "@/app/workflows/email-approval";
+import { approvalHook } from "@/app/workflows/email-approval";
+
+export async function POST(req: Request) {
+  const { topic, recipient } = await req.json();
+  
+  // Generate unique token for this workflow run
+  const hookToken = crypto.randomUUID();
+  
+  // Start workflow in background
+  (async () => {
+    try {
+      await emailApprovalWorkflow({
+        topic,
+        recipient,
+        hookToken,
+      });
+    } catch (error) {
+      console.error("Workflow failed:", error);
+    }
+  })();
+
+  // Return webhook URL for human interaction
+  const webhookUrl = \`\${process.env.NEXT_PUBLIC_SITE_URL}/api/approval/webhook/\${hookToken}\`;
+  
+  return NextResponse.json({
+    webhookUrl,
+    message: "Workflow started. Use the webhook URL to approve or reject.",
+  });
+}`,
+      },
+    ],
+  },
+  {
+    id: "scheduled-workflow",
+    title: "Scheduled/Delayed AI Task",
+    description:
+      "Durable workflow that sleeps for 7 days, then runs AI summarization/RAG on new data and generates a report. Uses 'use workflow' and sleep().",
+    category: "workflows",
+    difficulty: "intermediate",
+    tags: ["workflow", "scheduled", "delayed", "sleep", "workflow-devkit"],
+    relatedPatterns: ["durable-chat-agent", "sequential-workflow"],
+    files: [
+      {
+        path: "app/workflows/weekly-report.ts",
+        lang: "typescript",
+        content: `import { openai } from "@ai-sdk/openai";
+import { generateText } from "ai";
+import { sleep } from "workflow";
+
+export async function weeklyReportWorkflow(userId: string) {
+  "use workflow";
+
+  // Immediate: initial setup or first run
+  console.log(\`Starting weekly report for user \${userId}\`);
+
+  // Wait 7 days (zero cost while sleeping)
+  await sleep("7 days");
+
+  // Run AI generation after delay
+  const { text: report } = await generateText({
+    model: openai("gpt-4o-mini"),
+    prompt: \`Generate a personalized weekly AI news summary for user \${userId}. Include key trends.\`,
+  });
+
+  // await sendReportEmail(userId, report); // your step
+
+  return { status: "delivered", report };
+}`,
+      },
+      {
+        path: "app/api/schedule/route.ts",
+        lang: "typescript",
+        content: `import { NextResponse } from "next/server";
+import { weeklyReportWorkflow } from "@/app/workflows/weekly-report";
+
+export async function POST(req: Request) {
+  const { userId } = await req.json();
+  
+  // Start the scheduled workflow
+  (async () => {
+    try {
+      const result = await weeklyReportWorkflow(userId);
+      console.log("Weekly report completed:", result);
+    } catch (error) {
+      console.error("Weekly report failed:", error);
+    }
+  })();
+
+  return NextResponse.json({
+    message: "Weekly report workflow scheduled",
+    userId,
+  });
+}`,
+      },
+    ],
+  },
+  {
+    id: "refinement-loop",
+    title: "Refinement Loop",
+    description:
+      "AI refinement loop inside a durable workflow: generate → evaluate score → if low, refine and loop (max 3 times). Uses 'use step' for each phase.",
+    category: "workflows",
+    difficulty: "advanced",
+    tags: ["workflow", "refinement", "evaluation", "iteration", "workflow-devkit"],
+    relatedPatterns: ["evaluator-optimizer", "scheduled-workflow"],
+    files: [
+      {
+        path: "app/workflows/refinement-loop.ts",
+        lang: "typescript",
+        content: `import { openai } from "@ai-sdk/openai";
+import { generateObject } from "ai";
+import { z } from "zod";
+
+const MAX_ITERATIONS = 3;
+
+export async function contentRefinementWorkflow(prompt: string) {
+  "use workflow";
+
+  let current = await generateDraft(prompt);
+  let iteration = 0;
+
+  while (iteration < MAX_ITERATIONS) {
+    const evaluation = await evaluateContent(current);
+
+    if (evaluation.score >= 8) {
+      return { final: current, score: evaluation.score, iterations: iteration + 1 };
+    }
+
+    current = await refineContent(current, evaluation.feedback);
+    iteration++;
+  }
+
+  return { final: current, score: 6, iterations: MAX_ITERATIONS, note: "max iterations reached" };
+}
+
+async function generateDraft(prompt: string) {
+  "use step";
+  const { object } = await generateObject({
+    model: openai("gpt-4o-mini"),
+    schema: z.object({ content: z.string() }),
+    prompt: \`Generate high-quality content: \${prompt}\`,
+  });
+  return object.content;
+}
+
+async function evaluateContent(content: string) {
+  "use step";
+  const { object } = await generateObject({
+    model: openai("gpt-4o-mini"),
+    schema: z.object({ score: z.number().min(1).max(10), feedback: z.string() }),
+    prompt: \`Rate this content 1-10 for quality, clarity, accuracy:\\n\\n\${content}\`,
+  });
+  return object;
+}
+
+async function refineContent(content: string, feedback: string) {
+  "use step";
+  const { object } = await generateObject({
+    model: openai("gpt-4o-mini"),
+    schema: z.object({ improvedContent: z.string() }),
+    prompt: \`Improve this content based on feedback: \${feedback}\\n\\nOriginal: \${content}\`,
+  });
+  return object.improvedContent;
+}`,
+      },
+      {
+        path: "app/api/refine/route.ts",
+        lang: "typescript",
+        content: `import { NextResponse } from "next/server";
+import { contentRefinementWorkflow } from "@/app/workflows/refinement-loop";
+
+export async function POST(req: Request) {
+  const { prompt } = await req.json();
+  
+  // Start the refinement workflow
+  (async () => {
+    try {
+      const result = await contentRefinementWorkflow(prompt);
+      console.log("Refinement completed:", result);
+    } catch (error) {
+      console.error("Refinement failed:", error);
+    }
+  })();
+
+  return NextResponse.json({
+    message: "Refinement workflow started",
+    prompt,
+  });
+}`,
+      },
+    ],
+  },
 ];
 
 export function getPattern(id: string): PatternMeta | undefined {
