@@ -115,9 +115,21 @@ export function PatternsClient({ patterns }: { patterns: PatternMeta[] }) {
                   </div>
                 )}
                 <div className="p-4">
-                  <h3 className="text-[14px] font-semibold text-foreground group-hover:text-foreground transition-colors mb-1">
-                    {pattern.title}
-                  </h3>
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <h3 className="text-[14px] font-semibold text-foreground group-hover:text-foreground transition-colors">
+                      {pattern.title}
+                    </h3>
+                    {pattern.badges?.includes("new") && (
+                      <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
+                        New
+                      </span>
+                    )}
+                    {pattern.badges?.includes("popular") && (
+                      <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 uppercase tracking-wider">
+                        Popular
+                      </span>
+                    )}
+                  </div>
                   <p className="text-[13px] text-muted-foreground leading-relaxed mb-3 line-clamp-2">
                     {pattern.description}
                   </p>

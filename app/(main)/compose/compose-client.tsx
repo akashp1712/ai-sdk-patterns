@@ -27,6 +27,7 @@ interface PatternSummary {
   category: string;
   difficulty: string;
   fileCount: number;
+  badges?: string[];
 }
 
 const categoryOrder = ["core", "chat", "agents", "tools", "workflows"];
@@ -367,8 +368,18 @@ ${composedFiles.map((f) => `### ${f.path}\n\`\`\`\n${f.content}\n\`\`\``).join("
                                 )}
                               </div>
                               <div className="flex-1 min-w-0">
-                                <span className="text-sm font-medium text-foreground truncate block">
+                                <span className="text-sm font-medium text-foreground truncate flex items-center gap-1.5">
                                   {pattern.title}
+                                  {pattern.badges?.includes("new") && (
+                                    <span className="text-[9px] font-semibold px-1 py-px rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 uppercase tracking-wider shrink-0">
+                                      New
+                                    </span>
+                                  )}
+                                  {pattern.badges?.includes("popular") && (
+                                    <span className="text-[9px] font-semibold px-1 py-px rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 uppercase tracking-wider shrink-0">
+                                      Popular
+                                    </span>
+                                  )}
                                 </span>
                                 <p className="text-[12px] text-muted-foreground leading-relaxed mt-0.5 line-clamp-1">
                                   {pattern.description}

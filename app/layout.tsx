@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     template: "%s | AI SDK Patterns",
   },
   description:
-    "23+ open-source AI SDK patterns you can mix, match, and compose into full-stack Next.js apps. Chat, agents, tool calling, RAG, workflows — install individually or combine with the Composer. Free, provider-agnostic, no paywalls.",
+    "30+ open-source AI SDK patterns you can mix, match, and compose into full-stack Next.js apps. Chat, agents, tool calling, RAG, workflows — install individually or combine with the Composer. Free, provider-agnostic, no paywalls.",
   keywords: [
     "AI SDK",
     "Vercel AI SDK",
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "AI SDK Patterns — Compose AI Apps from Open-Source Patterns",
     description:
-      "23+ open-source AI SDK patterns. Install one or compose many into a full Next.js app. Chat, agents, tools, workflows — free and provider-agnostic.",
+      "30+ open-source AI SDK patterns. Install one or compose many into a full Next.js app. Chat, agents, tools, workflows — free and provider-agnostic.",
     url: BASE_URL,
     siteName: "AI SDK Patterns",
     type: "website",
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "AI SDK Patterns — Compose AI Apps from Open-Source Patterns",
     description:
-      "23+ composable AI SDK patterns. Install one or combine many into a full Next.js app. Free and provider-agnostic.",
+      "30+ composable AI SDK patterns. Install one or combine many into a full Next.js app. Free and provider-agnostic.",
   },
   alternates: {
     canonical: BASE_URL,
@@ -90,7 +90,6 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable}`}
-        suppressHydrationWarning
       >
         <ThemeProvider>
           {children}

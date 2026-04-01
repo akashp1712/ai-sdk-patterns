@@ -1041,6 +1041,164 @@ function RefinementLoopPreview() {
   );
 }
 
+function MCPClientPreview() {
+  return (
+    <PreviewShell>
+      <div className="flex flex-col h-full">
+        {/* MCP Server Config */}
+        <div className="border-b border-border/60 p-4 space-y-2">
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-muted-foreground">MCP Server:</span>
+            <div className="flex-1 rounded-md border border-border/60 bg-background px-2 py-1 text-xs font-mono text-muted-foreground">
+              http://localhost:3001/mcp
+            </div>
+            <div className="h-2 w-2 rounded-full bg-green-500" />
+            <span className="text-[10px] text-muted-foreground">Connected</span>
+          </div>
+          <div className="flex gap-1.5 flex-wrap">
+            {["getWeather", "calculate", "convertUnits"].map((tool) => (
+              <span key={tool} className="text-[10px] px-1.5 py-0.5 rounded bg-foreground/[0.06] font-mono text-muted-foreground">
+                {tool}
+              </span>
+            ))}
+          </div>
+        </div>
+        {/* Messages */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-3">
+          <ChatMessage role="user">What{"'"}s the weather in Paris and convert 25°C to Fahrenheit?</ChatMessage>
+          <div className="flex justify-start">
+            <div className="max-w-[85%] bg-muted rounded-lg px-4 py-3 text-sm space-y-2">
+              <ToolCallCard name='getWeather({ city: "Paris" })' result='{ "city": "Paris", "temperature": 22, "condition": "Sunny" }' />
+              <ToolCallCard name='convertUnits({ value: 25, from: "C", to: "F" })' result="25 C = 77.00 F" />
+              <div className="leading-relaxed">
+                It{"'"}s 22°C and sunny in Paris. And 25°C converts to 77°F — a beautiful day!
+              </div>
+            </div>
+          </div>
+        </div>
+        <ChatInput />
+      </div>
+    </PreviewShell>
+  );
+}
+
+function TextToSQLPreview() {
+  return (
+    <PreviewShell>
+      <div className="flex flex-col h-full">
+        {/* Header */}
+        <div className="border-b border-border/60 p-4">
+          <div className="text-sm font-medium mb-2">Ask questions about your data</div>
+          <div className="flex gap-1.5 flex-wrap">
+            {["employees", "departments", "projects"].map((t) => (
+              <span key={t} className="text-[10px] px-1.5 py-0.5 rounded bg-foreground/[0.06] font-mono text-muted-foreground">{t}</span>
+            ))}
+          </div>
+        </div>
+        {/* Messages */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-3">
+          <ChatMessage role="user">Show the top 3 highest paid employees</ChatMessage>
+          <div className="flex justify-start">
+            <div className="max-w-[90%] space-y-2">
+              {/* SQL */}
+              <div className="rounded-lg border border-border/60 overflow-hidden">
+                <div className="px-3 py-1.5 border-b bg-muted/50">
+                  <code className="text-[10px] font-mono text-muted-foreground">
+                    SELECT name, title, salary FROM employees ORDER BY salary DESC LIMIT 3
+                  </code>
+                </div>
+                <table className="w-full text-xs">
+                  <thead>
+                    <tr className="border-b bg-muted/30">
+                      {["name", "title", "salary"].map((h) => (
+                        <th key={h} className="text-left px-3 py-1.5 text-[10px] font-medium text-muted-foreground">{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      ["Henry Park", "Principal Engineer", "$155,000"],
+                      ["Carol Wu", "Staff Engineer", "$140,000"],
+                      ["Alice Chen", "Senior Engineer", "$125,000"],
+                    ].map((row, i) => (
+                      <tr key={i} className="border-b last:border-0">
+                        {row.map((cell, j) => (
+                          <td key={j} className="px-3 py-1.5 text-[11px]">{cell}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <div className="px-3 py-1 border-t text-[10px] text-muted-foreground bg-muted/30">3 rows</div>
+              </div>
+              <div className="bg-muted rounded-lg px-4 py-2 text-sm">
+                The top 3 highest paid employees are Henry Park ($155K), Carol Wu ($140K), and Alice Chen ($125K) — all from Engineering.
+              </div>
+            </div>
+          </div>
+        </div>
+        <ChatInput placeholder="Ask about the data..." />
+      </div>
+    </PreviewShell>
+  );
+}
+
+function MultiModalChatPreview() {
+  return (
+    <PreviewShell>
+      <div className="flex flex-col h-full">
+        <div className="flex-1 overflow-y-auto p-4 space-y-3">
+          <div className="flex justify-end">
+            <div className="max-w-[80%] rounded-lg px-4 py-2 text-sm bg-primary text-primary-foreground space-y-2">
+              {/* Image thumbnail */}
+              <div className="rounded border border-primary-foreground/20 overflow-hidden">
+                <div className="h-24 bg-primary-foreground/10 flex items-center justify-center">
+                  <div className="text-center space-y-1">
+                    <div className="text-2xl">🏔️</div>
+                    <div className="text-[10px] opacity-70">landscape.jpg</div>
+                  </div>
+                </div>
+              </div>
+              What mountain is this?
+            </div>
+          </div>
+          <ChatMessage role="assistant">
+            This appears to be a mountain landscape. The snow-capped peaks, alpine meadows, and distinctive
+            ridgeline suggest this could be in the Swiss Alps or the Canadian Rockies. The lighting indicates
+            this was taken during golden hour, giving the peaks a warm glow.
+          </ChatMessage>
+          <div className="flex justify-end">
+            <div className="max-w-[80%] rounded-lg px-4 py-2 text-sm bg-primary text-primary-foreground space-y-2">
+              <div className="flex items-center gap-2 text-xs bg-primary-foreground/10 rounded px-2 py-1">
+                <span>📎</span>
+                <span>report.pdf</span>
+              </div>
+              Summarize the key findings
+            </div>
+          </div>
+          <ChatMessage role="assistant">
+            Based on the report, the key findings are: revenue grew 23% year-over-year,
+            customer retention improved to 94%, and the new product line exceeded targets
+            by 15%. The report recommends expanding into two new markets in Q2.
+            <span className="inline-block w-1.5 h-4 bg-foreground/50 animate-pulse ml-0.5 -mb-0.5 rounded-sm" />
+          </ChatMessage>
+        </div>
+        <div className="border-t border-border/60 p-4 flex gap-2">
+          <div className="rounded-md border border-border/60 px-3 py-2 text-sm text-muted-foreground cursor-pointer hover:bg-accent transition-colors">
+            📎
+          </div>
+          <div className="flex-1 rounded-md border border-border/60 bg-background px-3 py-2 text-sm text-muted-foreground">
+            Type a message or paste an image...
+          </div>
+          <div className="rounded-md bg-foreground text-background px-4 py-2 text-sm font-medium">
+            Send
+          </div>
+        </div>
+      </div>
+    </PreviewShell>
+  );
+}
+
 // ── Registry ──────────────────────────────────────────────
 
 const previewMap: Record<string, React.ReactNode> = {
@@ -1071,6 +1229,9 @@ const previewMap: Record<string, React.ReactNode> = {
   "workflow-approval": <WorkflowApprovalPreview />,
   "scheduled-workflow": <ScheduledWorkflowPreview />,
   "refinement-loop": <RefinementLoopPreview />,
+  "mcp-client": <MCPClientPreview />,
+  "text-to-sql": <TextToSQLPreview />,
+  "multimodal-chat": <MultiModalChatPreview />,
 };
 
 export function getPatternPreview(patternId: string): React.ReactNode | null {

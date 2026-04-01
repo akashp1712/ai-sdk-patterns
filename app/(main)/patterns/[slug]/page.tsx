@@ -86,6 +86,16 @@ export default async function PatternPage({
 
         {/* Meta chips */}
         <div className="flex flex-wrap items-center gap-2 mt-5">
+          {pattern.badges?.includes("new") && (
+            <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
+              New
+            </span>
+          )}
+          {pattern.badges?.includes("popular") && (
+            <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 uppercase tracking-wider">
+              Popular
+            </span>
+          )}
           <Link
             href={`/patterns?category=${pattern.category}`}
             className="text-xs font-medium px-2.5 py-1 rounded-md bg-foreground/6 text-foreground hover:bg-foreground/10 transition-colors"
@@ -214,7 +224,7 @@ export default async function PatternPage({
               <div className="text-sm text-muted-foreground space-y-2">
                 <div>• Next.js 16+ (App Router)</div>
                 <div>• AI SDK v6</div>
-                <div>• React 18+</div>
+                <div>• React 19+</div>
                 <div>• Tailwind CSS</div>
                 <div>• TypeScript</div>
               </div>

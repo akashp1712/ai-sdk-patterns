@@ -441,6 +441,66 @@ export function RefinementLoopIll() {
   );
 }
 
+export function MCPClientIll() {
+  return (
+    <IllustrationCanvas>
+      <div className="flex items-center gap-2">
+        <NodeCircle label="AI" size="md" />
+        <ArrowConnector color="cyan" />
+        <MiniCard className="px-2 py-1.5 border-cyan-500/30 bg-cyan-500/10">
+          <div className="text-[7px] text-cyan-500/80 mb-1">MCP</div>
+          <div className="flex flex-col gap-0.5">
+            <Pill color="cyan" mono>fn()</Pill>
+            <Pill color="cyan" mono>api()</Pill>
+          </div>
+        </MiniCard>
+      </div>
+    </IllustrationCanvas>
+  );
+}
+
+export function TextToSQLIll() {
+  return (
+    <IllustrationCanvas>
+      <div className="flex items-center gap-1.5">
+        <ChatBubble align="right">
+          <div className="text-[7px]">Show top sales</div>
+        </ChatBubble>
+        <ArrowConnector color="amber" />
+        <MiniCard className="px-1.5 py-1 font-mono text-[7px] text-amber-500/80 border-amber-500/30 bg-amber-500/10">
+          SELECT *
+        </MiniCard>
+        <ArrowConnector color="amber" />
+        <MiniCard className="p-1">
+          <div className="grid grid-cols-2 gap-px">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="h-2 w-5 rounded-sm bg-amber-500/15" />
+            ))}
+          </div>
+        </MiniCard>
+      </div>
+    </IllustrationCanvas>
+  );
+}
+
+export function MultiModalChatIll() {
+  return (
+    <IllustrationCanvas>
+      <div className="w-full max-w-[140px] space-y-2">
+        <ChatBubble align="right">
+          <div className="flex items-center gap-1">
+            <div className="h-5 w-6 rounded bg-gradient-to-br from-sky-400/30 to-rose-400/30 shrink-0" />
+            <div className="text-[7px]">What is this?</div>
+          </div>
+        </ChatBubble>
+        <ChatBubble align="left">
+          <SkeletonLines count={2} color="sky" pulse />
+        </ChatBubble>
+      </div>
+    </IllustrationCanvas>
+  );
+}
+
 // ── Registry ────────────────────────────────────────────────────────
 // Add new pattern illustrations here. Key = pattern id from lib/patterns.ts
 
@@ -472,6 +532,9 @@ const illustrationMap: Record<string, React.ReactNode> = {
   "workflow-approval": <WorkflowApprovalIll />,
   "scheduled-workflow": <ScheduledWorkflowIll />,
   "refinement-loop": <RefinementLoopIll />,
+  "mcp-client": <MCPClientIll />,
+  "text-to-sql": <TextToSQLIll />,
+  "multimodal-chat": <MultiModalChatIll />,
 };
 
 export function getPatternIllustration(patternId: string): React.ReactNode {

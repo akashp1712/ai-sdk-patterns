@@ -402,6 +402,60 @@ export const patternUseCases: Record<string, UseCase[]> = {
       description: "Build platforms that generate multi-step forms for business processes, onboarding, or approval workflows."
     }
   ],
+  "mcp-client": [
+    {
+      title: "Extensible AI Assistants",
+      description: "Build AI assistants that connect to any MCP-compatible tool server, gaining new capabilities without code changes."
+    },
+    {
+      title: "Enterprise Tool Integration",
+      description: "Connect AI agents to internal APIs, databases, and services exposed as MCP servers for secure, governed tool access."
+    },
+    {
+      title: "Developer Tooling Agents",
+      description: "Create coding assistants that use MCP to access file systems, Git repos, package registries, and CI/CD pipelines."
+    },
+    {
+      title: "Dynamic Plugin Systems",
+      description: "Build AI platforms where users can add new tool servers on the fly, extending the AI's capabilities without redeployment."
+    }
+  ],
+  "text-to-sql": [
+    {
+      title: "Business Intelligence Dashboards",
+      description: "Let non-technical users query databases in plain English, generating reports and insights without writing SQL."
+    },
+    {
+      title: "Customer Data Exploration",
+      description: "Build self-service analytics tools where product and marketing teams can explore user data conversationally."
+    },
+    {
+      title: "Log and Metrics Analysis",
+      description: "Query application logs, performance metrics, and operational data using natural language for faster incident response."
+    },
+    {
+      title: "Inventory and Sales Reporting",
+      description: "Enable warehouse and sales teams to check stock levels, sales trends, and order status by simply asking questions."
+    }
+  ],
+  "multimodal-chat": [
+    {
+      title: "Visual QA and Image Analysis",
+      description: "Build apps where users upload photos for identification, analysis, or description — from plant ID to architecture review."
+    },
+    {
+      title: "Document Processing Assistants",
+      description: "Create tools that read PDFs, invoices, receipts, and contracts, extracting key information through conversation."
+    },
+    {
+      title: "Creative Design Feedback",
+      description: "Build review tools where designers upload mockups and get AI feedback on layout, accessibility, and design principles."
+    },
+    {
+      title: "Medical and Scientific Image Review",
+      description: "Develop assistants that analyze medical images, lab results, or scientific diagrams with expert-level context."
+    }
+  ],
   "csv-editor": [
     {
       title: "Financial Data Analysis",

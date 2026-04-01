@@ -14,6 +14,10 @@ function buildDependencies(pattern: PatternMeta): string[] {
 
   if (allContent.includes('from "zod"')) deps.push("zod");
   if (allContent.includes('from "lucide-react"')) deps.push("lucide-react");
+  if (allContent.includes('from "better-sqlite3"')) deps.push("better-sqlite3");
+  if (allContent.includes('@modelcontextprotocol/sdk')) {
+    deps.push("@modelcontextprotocol/sdk");
+  }
 
   return deps;
 }

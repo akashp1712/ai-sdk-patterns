@@ -7,6 +7,8 @@ export interface PatternFile {
   lang: "typescript" | "tsx";
 }
 
+export type PatternBadge = "new" | "popular" | "updated";
+
 export interface PatternMeta {
   id: string;
   title: string;
@@ -14,6 +16,7 @@ export interface PatternMeta {
   category: PatternCategory;
   difficulty: PatternDifficulty;
   tags: string[];
+  badges?: PatternBadge[];
   files: PatternFile[];
   relatedPatterns: string[];
 }
@@ -27,6 +30,7 @@ export const patterns: PatternMeta[] = [
     category: "chat",
     difficulty: "beginner",
     tags: ["streaming", "chat", "useChat", "streamText"],
+    badges: ["popular"],
     relatedPatterns: ["structured-output", "tool-calling"],
     files: [
       {
@@ -282,6 +286,7 @@ export async function POST(req: Request) {
     category: "agents",
     difficulty: "intermediate",
     tags: ["tools", "function-calling", "agent", "multi-step"],
+    badges: ["popular"],
     relatedPatterns: ["streaming-chat", "multi-step-agent"],
     files: [
       {
@@ -583,6 +588,7 @@ export async function POST(req: Request) {
     category: "agents",
     difficulty: "advanced",
     tags: ["agent", "multi-step", "orchestration", "maxSteps"],
+    badges: ["popular"],
     relatedPatterns: ["tool-calling", "human-in-the-loop"],
     files: [
       {
@@ -1223,6 +1229,7 @@ execution.\`,
     category: "tools",
     difficulty: "advanced",
     tags: ["rag", "embeddings", "vector-search", "retrieval"],
+    badges: ["popular"],
     relatedPatterns: ["web-search", "tool-calling"],
     files: [
       {
@@ -2486,6 +2493,7 @@ export async function POST(req: Request) {
     category: "core",
     difficulty: "advanced",
     tags: ["code-generation", "syntax-highlighting", "generateText", "artifact"],
+    badges: ["popular"],
     relatedPatterns: ["text-generation", "streaming-chat", "markdown-chat"],
     files: [
       {
@@ -4620,6 +4628,961 @@ export async function POST(req: Request) {
     message: "Refinement workflow started",
     prompt,
   });
+}`,
+      },
+    ],
+  },
+  {
+    id: "mcp-client",
+    title: "MCP Client Agent",
+    description:
+      "Connect to any Model Context Protocol server, discover tools dynamically, and let the AI use them in a chat interface. Includes a demo MCP server with weather and calculator tools.",
+    category: "tools",
+    difficulty: "advanced",
+    tags: ["mcp", "model-context-protocol", "dynamic-tools", "agent", "tool-discovery"],
+    badges: ["new"],
+    relatedPatterns: ["tool-calling", "multi-step-agent"],
+    files: [
+      {
+        path: "app/page.tsx",
+        lang: "tsx",
+        content: `"use client";
+
+import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
+import { useState } from "react";
+
+export default function MCPClientPage() {
+  const [input, setInput] = useState("");
+  const [serverUrl, setServerUrl] = useState("http://localhost:3001/mcp");
+  const [connected, setConnected] = useState(false);
+
+  const { messages, sendMessage, isLoading } = useChat({
+    transport: new DefaultChatTransport({
+      api: "/api/mcp",
+      headers: { "x-mcp-server-url": serverUrl },
+    }),
+  });
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!input?.trim()) return;
+    sendMessage({ text: input });
+    setInput("");
+    if (!connected) setConnected(true);
+  }
+
+  return (
+    <div className="flex flex-col h-screen max-w-3xl mx-auto">
+      {/* MCP Server Config */}
+      <div className="border-b p-4 space-y-2">
+        <h1 className="text-lg font-bold">MCP Client Agent</h1>
+        <div className="flex items-center gap-2">
+          <label className="text-sm text-muted-foreground shrink-0">MCP Server:</label>
+          <input
+            value={serverUrl}
+            onChange={(e) => setServerUrl(e.target.value)}
+            placeholder="http://localhost:3001/mcp"
+            className="flex-1 rounded-md border bg-background px-3 py-1.5 text-sm font-mono"
+          />
+          <div className={\`h-2 w-2 rounded-full \${connected ? "bg-green-500" : "bg-muted-foreground/30"}\`} />
+          <span className="text-xs text-muted-foreground">
+            {connected ? "Connected" : "Will connect on first message"}
+          </span>
+        </div>
+        <p className="text-xs text-muted-foreground">
+          Start the demo server: <code className="bg-muted px-1 rounded">npx tsx mcp-server.ts</code>
+        </p>
+      </div>
+
+      {/* Messages */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        {messages.length === 0 && (
+          <div className="text-center text-muted-foreground mt-20 space-y-2">
+            <p>Connected to an MCP server, tools are discovered automatically.</p>
+            <p className="text-sm">Try: &quot;What&#39;s the weather in Paris?&quot; or &quot;Calculate 42 * 17&quot;</p>
+          </div>
+        )}
+        {messages.map((message) => (
+          <div
+            key={message.id}
+            className={\`flex \${message.role === "user" ? "justify-end" : "justify-start"}\`}
+          >
+            <div
+              className={\`max-w-[80%] rounded-lg px-4 py-2 text-sm \${
+                message.role === "user"
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-muted"
+              }\`}
+            >
+              {message.parts?.map((part, i) => {
+                if (part.type === "text") return <span key={i}>{part.text}</span>;
+                if (part.type === "tool-invocation") {
+                  return (
+                    <div key={i} className="my-2 rounded border bg-background p-2 text-xs font-mono">
+                      <div className="text-muted-foreground mb-1">
+                        Tool: {part.toolInvocation.toolName}
+                      </div>
+                      <div className="text-muted-foreground mb-1">
+                        Args: {JSON.stringify(part.toolInvocation.args)}
+                      </div>
+                      {part.toolInvocation.state === "result" && (
+                        <div className="text-foreground">
+                          Result: {JSON.stringify(part.toolInvocation.result)}
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+                return null;
+              })}
+              {!message.parts?.length && message.content}
+            </div>
+          </div>
+        ))}
+        {isLoading && (
+          <div className="flex justify-start">
+            <div className="bg-muted rounded-lg px-4 py-2 text-sm text-muted-foreground">
+              Thinking...
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Input */}
+      <form onSubmit={handleSubmit} className="border-t p-4 flex gap-2">
+        <input
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Ask the agent anything..."
+          className="flex-1 rounded-md border bg-background px-3 py-2 text-sm"
+        />
+        <button
+          type="submit"
+          disabled={isLoading || !input?.trim()}
+          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50"
+        >
+          Send
+        </button>
+      </form>
+    </div>
+  );
+}`,
+      },
+      {
+        path: "app/api/mcp/route.ts",
+        lang: "typescript",
+        content: `import { streamText } from "ai";
+import { getModel } from "@/lib/model";
+import { experimental_createMCPClient as createMCPClient } from "ai";
+
+export async function POST(req: Request) {
+  const { messages } = await req.json();
+  const serverUrl = req.headers.get("x-mcp-server-url") || "http://localhost:3001/mcp";
+
+  // Connect to the MCP server and discover tools dynamically
+  const mcpClient = await createMCPClient({
+    transport: {
+      type: "sse",
+      url: serverUrl,
+    },
+  });
+
+  try {
+    const mcpTools = await mcpClient.tools();
+
+    const result = streamText({
+      model: getModel(),
+      messages,
+      tools: mcpTools,
+      maxSteps: 5,
+      onFinish: async () => {
+        await mcpClient.close();
+      },
+    });
+
+    return result.toUIMessageStreamResponse();
+  } catch (error) {
+    await mcpClient.close();
+    throw error;
+  }
+}`,
+      },
+      {
+        path: "mcp-server.ts",
+        lang: "typescript",
+        content: `// Demo MCP Server — run with: npx tsx mcp-server.ts
+// Exposes weather and calculator tools via the Model Context Protocol.
+
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
+import { z } from "zod";
+import { createServer } from "http";
+
+const server = new McpServer({
+  name: "demo-mcp-server",
+  version: "1.0.0",
+});
+
+// Weather tool
+server.tool(
+  "getWeather",
+  "Get current weather for a city",
+  { city: z.string().describe("City name") },
+  async ({ city }) => {
+    // Simulated weather data
+    const conditions = ["Sunny", "Cloudy", "Rainy", "Partly Cloudy", "Foggy"];
+    const temp = Math.floor(Math.random() * 30) + 5;
+    const condition = conditions[Math.floor(Math.random() * conditions.length)];
+    return {
+      content: [
+        {
+          type: "text" as const,
+          text: JSON.stringify({ city, temperature: temp, unit: "°C", condition, humidity: Math.floor(Math.random() * 60) + 30 }),
+        },
+      ],
+    };
+  }
+);
+
+// Calculator tool
+server.tool(
+  "calculate",
+  "Evaluate a mathematical expression",
+  { expression: z.string().describe("Math expression to evaluate, e.g. '2 + 3 * 4'") },
+  async ({ expression }) => {
+    // Safe math evaluation using Function constructor with restricted scope
+    const sanitized = expression.replace(/[^0-9+\\-*/.() ]/g, "");
+    try {
+      const result = new Function(\`"use strict"; return (\${sanitized})\`)();
+      return {
+        content: [{ type: "text" as const, text: String(result) }],
+      };
+    } catch {
+      return {
+        content: [{ type: "text" as const, text: "Error: Invalid expression" }],
+        isError: true,
+      };
+    }
+  }
+);
+
+// Unit converter tool
+server.tool(
+  "convertUnits",
+  "Convert between common units",
+  {
+    value: z.number().describe("Numeric value to convert"),
+    from: z.string().describe("Source unit, e.g. 'km', 'miles', 'kg', 'lbs', 'C', 'F'"),
+    to: z.string().describe("Target unit"),
+  },
+  async ({ value, from, to }) => {
+    const conversions: Record<string, Record<string, (v: number) => number>> = {
+      km: { miles: (v) => v * 0.621371 },
+      miles: { km: (v) => v * 1.60934 },
+      kg: { lbs: (v) => v * 2.20462 },
+      lbs: { kg: (v) => v * 0.453592 },
+      C: { F: (v) => v * 9 / 5 + 32 },
+      F: { C: (v) => (v - 32) * 5 / 9 },
+    };
+    const fn = conversions[from]?.[to];
+    if (!fn) {
+      return { content: [{ type: "text" as const, text: \`Cannot convert \${from} to \${to}\` }], isError: true };
+    }
+    const result = fn(value);
+    return {
+      content: [{ type: "text" as const, text: \`\${value} \${from} = \${result.toFixed(2)} \${to}\` }],
+    };
+  }
+);
+
+// Start SSE server
+const PORT = 3001;
+let transport: SSEServerTransport | null = null;
+
+const httpServer = createServer(async (req, res) => {
+  // CORS headers
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    res.writeHead(204);
+    res.end();
+    return;
+  }
+
+  if (req.url === "/mcp" && req.method === "GET") {
+    transport = new SSEServerTransport("/mcp/messages", res);
+    await server.connect(transport);
+    return;
+  }
+
+  if (req.url === "/mcp/messages" && req.method === "POST") {
+    if (transport) {
+      let body = "";
+      req.on("data", (chunk) => { body += chunk; });
+      req.on("end", async () => {
+        await transport!.handlePostMessage(req, res, body);
+      });
+    }
+    return;
+  }
+
+  res.writeHead(404);
+  res.end("Not found");
+});
+
+httpServer.listen(PORT, () => {
+  console.log(\`MCP Demo Server running on http://localhost:\${PORT}/mcp\`);
+  console.log("Tools: getWeather, calculate, convertUnits");
+});`,
+      },
+      {
+        path: "lib/model.ts",
+        lang: "typescript",
+        content: `import { anthropic } from "@ai-sdk/anthropic";
+import { openai } from "@ai-sdk/openai";
+import { google } from "@ai-sdk/google";
+
+export function getModel(id?: string) {
+  const modelId = id || process.env.DEFAULT_MODEL || "anthropic:claude-sonnet-4-5";
+  const [provider, ...rest] = modelId.split(":");
+  const model = rest.join(":");
+  switch (provider) {
+    case "anthropic": return anthropic(model);
+    case "openai": return openai(model);
+    case "google": return google(model);
+    default: return anthropic(model);
+  }
+}`,
+      },
+    ],
+  },
+  {
+    id: "text-to-sql",
+    title: "Text-to-SQL",
+    description:
+      "Natural language to SQL: ask questions about data in plain English, the AI generates and executes SQL queries, and displays results in a table. Uses an in-memory SQLite database with sample data.",
+    category: "tools",
+    difficulty: "advanced",
+    tags: ["sql", "database", "text-to-sql", "tool-calling", "structured-output", "better-sqlite3"],
+    badges: ["new"],
+    relatedPatterns: ["tool-calling", "structured-output"],
+    files: [
+      {
+        path: "app/page.tsx",
+        lang: "tsx",
+        content: `"use client";
+
+import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
+import { useState } from "react";
+
+export default function TextToSQLPage() {
+  const [input, setInput] = useState("");
+
+  const { messages, sendMessage, isLoading } = useChat({
+    transport: new DefaultChatTransport({ api: "/api/sql" }),
+  });
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!input?.trim()) return;
+    sendMessage({ text: input });
+    setInput("");
+  }
+
+  return (
+    <div className="flex flex-col h-screen max-w-4xl mx-auto">
+      {/* Header */}
+      <div className="border-b p-4">
+        <h1 className="text-lg font-bold">Text-to-SQL</h1>
+        <p className="text-sm text-muted-foreground">
+          Ask questions about the sample database in plain English.
+        </p>
+        <div className="flex gap-2 mt-2 flex-wrap">
+          {[
+            "Show all employees with salary above 80000",
+            "What's the average salary per department?",
+            "List the top 3 highest paid employees",
+            "How many employees are in each department?",
+          ].map((q) => (
+            <button
+              key={q}
+              onClick={() => { setInput(q); }}
+              className="text-xs px-2 py-1 rounded-md border bg-muted hover:bg-accent transition-colors"
+            >
+              {q}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Messages */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        {messages.length === 0 && (
+          <div className="text-center text-muted-foreground mt-20 space-y-2">
+            <p className="text-lg font-medium">Ask questions about your data</p>
+            <p className="text-sm">The database has employees, departments, and projects tables.</p>
+          </div>
+        )}
+        {messages.map((message) => (
+          <div key={message.id} className="space-y-2">
+            {message.role === "user" ? (
+              <div className="flex justify-end">
+                <div className="max-w-[80%] rounded-lg px-4 py-2 text-sm bg-primary text-primary-foreground">
+                  {message.content}
+                </div>
+              </div>
+            ) : (
+              <div className="flex justify-start">
+                <div className="max-w-[90%] space-y-2">
+                  {message.parts?.map((part, i) => {
+                    if (part.type === "text") {
+                      return <div key={i} className="bg-muted rounded-lg px-4 py-2 text-sm">{part.text}</div>;
+                    }
+                    if (part.type === "tool-invocation" && part.toolInvocation.state === "result") {
+                      const result = part.toolInvocation.result;
+                      return (
+                        <div key={i} className="rounded-lg border bg-card overflow-hidden">
+                          {/* SQL query */}
+                          <div className="px-4 py-2 border-b bg-muted/50">
+                            <code className="text-xs font-mono text-muted-foreground">
+                              {part.toolInvocation.args?.query}
+                            </code>
+                          </div>
+                          {/* Results table */}
+                          {result?.rows?.length > 0 ? (
+                            <div className="overflow-x-auto">
+                              <table className="w-full text-sm">
+                                <thead>
+                                  <tr className="border-b bg-muted/30">
+                                    {result.columns.map((col: string) => (
+                                      <th key={col} className="text-left px-4 py-2 text-xs font-medium text-muted-foreground">
+                                        {col}
+                                      </th>
+                                    ))}
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {result.rows.map((row: Record<string, unknown>, ri: number) => (
+                                    <tr key={ri} className="border-b last:border-0">
+                                      {result.columns.map((col: string) => (
+                                        <td key={col} className="px-4 py-2 text-xs">
+                                          {String(row[col] ?? "")}
+                                        </td>
+                                      ))}
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          ) : (
+                            <div className="px-4 py-3 text-xs text-muted-foreground">
+                              {result?.error || "No results"}
+                            </div>
+                          )}
+                          {result?.rowCount != null && (
+                            <div className="px-4 py-1.5 border-t text-xs text-muted-foreground bg-muted/30">
+                              {result.rowCount} row{result.rowCount !== 1 ? "s" : ""}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    }
+                    return null;
+                  })}
+                  {!message.parts?.length && (
+                    <div className="bg-muted rounded-lg px-4 py-2 text-sm">{message.content}</div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+        {isLoading && (
+          <div className="flex justify-start">
+            <div className="bg-muted rounded-lg px-4 py-2 text-sm text-muted-foreground">
+              Querying...
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Input */}
+      <form onSubmit={handleSubmit} className="border-t p-4 flex gap-2">
+        <input
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Ask about the data in plain English..."
+          className="flex-1 rounded-md border bg-background px-3 py-2 text-sm"
+        />
+        <button
+          type="submit"
+          disabled={isLoading || !input?.trim()}
+          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50"
+        >
+          Ask
+        </button>
+      </form>
+    </div>
+  );
+}`,
+      },
+      {
+        path: "app/api/sql/route.ts",
+        lang: "typescript",
+        content: `import { streamText, tool } from "ai";
+import { z } from "zod";
+import { getModel } from "@/lib/model";
+import { getDb } from "@/lib/db";
+
+export async function POST(req: Request) {
+  const { messages } = await req.json();
+  const db = getDb();
+
+  // Get schema for context
+  const tables = db
+    .prepare("SELECT name, sql FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")
+    .all() as { name: string; sql: string }[];
+  const schemaContext = tables.map((t) => t.sql).join("\\n\\n");
+
+  const result = streamText({
+    model: getModel(),
+    system: \`You are a SQL assistant. You have access to a SQLite database with the following schema:
+
+\${schemaContext}
+
+When the user asks a question about data:
+1. Generate a valid SQLite SELECT query to answer their question
+2. Use the executeSql tool to run it
+3. Explain the results in plain English
+
+Rules:
+- ONLY generate SELECT queries (never INSERT, UPDATE, DELETE, DROP, etc.)
+- Use proper SQLite syntax
+- Keep queries simple and readable
+- If the question is ambiguous, make reasonable assumptions and explain them\`,
+    messages,
+    tools: {
+      executeSql: tool({
+        description: "Execute a read-only SQL query against the database and return results",
+        parameters: z.object({
+          query: z.string().describe("The SQL SELECT query to execute"),
+        }),
+        execute: async ({ query }) => {
+          // Safety: only allow SELECT
+          const trimmed = query.trim().toUpperCase();
+          if (!trimmed.startsWith("SELECT") && !trimmed.startsWith("WITH") && !trimmed.startsWith("EXPLAIN")) {
+            return { error: "Only SELECT queries are allowed", columns: [], rows: [], rowCount: 0 };
+          }
+          try {
+            const stmt = db.prepare(query);
+            const rows = stmt.all() as Record<string, unknown>[];
+            const columns = rows.length > 0 ? Object.keys(rows[0]) : [];
+            return { columns, rows, rowCount: rows.length };
+          } catch (error: unknown) {
+            const message = error instanceof Error ? error.message : "Query failed";
+            return { error: message, columns: [], rows: [], rowCount: 0 };
+          }
+        },
+      }),
+    },
+    maxSteps: 3,
+  });
+
+  return result.toUIMessageStreamResponse();
+}`,
+      },
+      {
+        path: "lib/db.ts",
+        lang: "typescript",
+        content: `import Database from "better-sqlite3";
+
+let db: ReturnType<typeof Database> | null = null;
+
+export function getDb() {
+  if (db) return db;
+
+  db = new Database(":memory:");
+
+  // Create tables
+  db.exec(\`
+    CREATE TABLE departments (
+      id INTEGER PRIMARY KEY,
+      name TEXT NOT NULL,
+      budget REAL NOT NULL
+    );
+
+    CREATE TABLE employees (
+      id INTEGER PRIMARY KEY,
+      name TEXT NOT NULL,
+      email TEXT NOT NULL,
+      department_id INTEGER REFERENCES departments(id),
+      salary REAL NOT NULL,
+      hire_date TEXT NOT NULL,
+      title TEXT NOT NULL
+    );
+
+    CREATE TABLE projects (
+      id INTEGER PRIMARY KEY,
+      name TEXT NOT NULL,
+      department_id INTEGER REFERENCES departments(id),
+      status TEXT NOT NULL CHECK(status IN ('active', 'completed', 'planned')),
+      budget REAL NOT NULL,
+      start_date TEXT NOT NULL
+    );
+  \`);
+
+  // Seed sample data
+  const insertDept = db.prepare("INSERT INTO departments (id, name, budget) VALUES (?, ?, ?)");
+  const depts = [
+    [1, "Engineering", 500000],
+    [2, "Design", 200000],
+    [3, "Marketing", 300000],
+    [4, "Product", 250000],
+    [5, "Sales", 400000],
+  ];
+  for (const d of depts) insertDept.run(...d);
+
+  const insertEmp = db.prepare(
+    "INSERT INTO employees (id, name, email, department_id, salary, hire_date, title) VALUES (?, ?, ?, ?, ?, ?, ?)"
+  );
+  const employees = [
+    [1, "Alice Chen", "alice@company.com", 1, 125000, "2021-03-15", "Senior Engineer"],
+    [2, "Bob Smith", "bob@company.com", 2, 95000, "2022-06-01", "UX Designer"],
+    [3, "Carol Wu", "carol@company.com", 1, 140000, "2020-01-10", "Staff Engineer"],
+    [4, "Dan Lee", "dan@company.com", 3, 85000, "2023-02-20", "Marketing Manager"],
+    [5, "Eve Johnson", "eve@company.com", 4, 110000, "2021-09-01", "Product Manager"],
+    [6, "Frank Garcia", "frank@company.com", 1, 105000, "2022-11-15", "Software Engineer"],
+    [7, "Grace Kim", "grace@company.com", 5, 95000, "2023-04-10", "Sales Rep"],
+    [8, "Henry Park", "henry@company.com", 1, 155000, "2019-06-20", "Principal Engineer"],
+    [9, "Ivy Zhang", "ivy@company.com", 2, 88000, "2023-08-01", "UI Designer"],
+    [10, "Jack Brown", "jack@company.com", 5, 78000, "2024-01-15", "Sales Associate"],
+    [11, "Kate Miller", "kate@company.com", 3, 92000, "2022-03-10", "Content Strategist"],
+    [12, "Leo Nguyen", "leo@company.com", 4, 120000, "2021-07-22", "Senior PM"],
+  ];
+  for (const e of employees) insertEmp.run(...e);
+
+  const insertProj = db.prepare(
+    "INSERT INTO projects (id, name, department_id, status, budget, start_date) VALUES (?, ?, ?, ?, ?, ?)"
+  );
+  const projects = [
+    [1, "API Redesign", 1, "active", 150000, "2024-01-01"],
+    [2, "Brand Refresh", 2, "completed", 50000, "2023-06-01"],
+    [3, "Growth Campaign", 3, "active", 100000, "2024-03-15"],
+    [4, "Mobile App v2", 1, "planned", 200000, "2024-06-01"],
+    [5, "Enterprise Sales", 5, "active", 75000, "2024-02-01"],
+  ];
+  for (const p of projects) insertProj.run(...p);
+
+  return db;
+}`,
+      },
+      {
+        path: "lib/model.ts",
+        lang: "typescript",
+        content: `import { anthropic } from "@ai-sdk/anthropic";
+import { openai } from "@ai-sdk/openai";
+import { google } from "@ai-sdk/google";
+
+export function getModel(id?: string) {
+  const modelId = id || process.env.DEFAULT_MODEL || "anthropic:claude-sonnet-4-5";
+  const [provider, ...rest] = modelId.split(":");
+  const model = rest.join(":");
+  switch (provider) {
+    case "anthropic": return anthropic(model);
+    case "openai": return openai(model);
+    case "google": return google(model);
+    default: return anthropic(model);
+  }
+}`,
+      },
+    ],
+  },
+  {
+    id: "multimodal-chat",
+    title: "Multi-Modal Chat",
+    description:
+      "Chat with images, files, and text in a single conversation. Drag-and-drop or paste images for vision analysis, attach files for context, and get AI responses that understand all modalities.",
+    category: "chat",
+    difficulty: "intermediate",
+    tags: ["multimodal", "vision", "image-upload", "file-attachment", "drag-drop"],
+    badges: ["new"],
+    relatedPatterns: ["streaming-chat", "markdown-chat"],
+    files: [
+      {
+        path: "app/page.tsx",
+        lang: "tsx",
+        content: `"use client";
+
+import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
+import { useState, useRef, useCallback } from "react";
+
+interface Attachment {
+  name: string;
+  type: string;
+  url: string; // data URL
+}
+
+export default function MultiModalChatPage() {
+  const [input, setInput] = useState("");
+  const [attachments, setAttachments] = useState<Attachment[]>([]);
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const { messages, sendMessage, isLoading } = useChat({
+    transport: new DefaultChatTransport({ api: "/api/multimodal" }),
+  });
+
+  const processFile = useCallback((file: File) => {
+    if (file.size > 10 * 1024 * 1024) {
+      alert("File must be under 10MB");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      setAttachments((prev) => [
+        ...prev,
+        { name: file.name, type: file.type, url: reader.result as string },
+      ]);
+    };
+    reader.readAsDataURL(file);
+  }, []);
+
+  function handleFiles(files: FileList | null) {
+    if (!files) return;
+    Array.from(files).forEach(processFile);
+  }
+
+  function handlePaste(e: React.ClipboardEvent) {
+    const items = e.clipboardData?.items;
+    if (!items) return;
+    for (const item of Array.from(items)) {
+      if (item.type.startsWith("image/")) {
+        const file = item.getAsFile();
+        if (file) processFile(file);
+      }
+    }
+  }
+
+  function handleDrop(e: React.DragEvent) {
+    e.preventDefault();
+    setIsDragging(false);
+    handleFiles(e.dataTransfer.files);
+  }
+
+  function removeAttachment(index: number) {
+    setAttachments((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!input?.trim() && attachments.length === 0) return;
+
+    const experimental_attachments = attachments.map((a) => ({
+      name: a.name,
+      contentType: a.type,
+      url: a.url,
+    }));
+
+    sendMessage({
+      text: input || "What do you see in the attached file(s)?",
+      experimental_attachments: experimental_attachments.length > 0 ? experimental_attachments : undefined,
+    });
+
+    setInput("");
+    setAttachments([]);
+  }
+
+  return (
+    <div
+      className="flex flex-col h-screen max-w-3xl mx-auto"
+      onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+      onDragLeave={() => setIsDragging(false)}
+      onDrop={handleDrop}
+    >
+      {/* Header */}
+      <div className="border-b p-4">
+        <h1 className="text-lg font-bold">Multi-Modal Chat</h1>
+        <p className="text-sm text-muted-foreground">
+          Send text, images, and files. Drag &amp; drop, paste, or use the attach button.
+        </p>
+      </div>
+
+      {/* Drop overlay */}
+      {isDragging && (
+        <div className="absolute inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center border-2 border-dashed border-primary rounded-lg m-2">
+          <div className="text-center">
+            <p className="text-lg font-medium">Drop files here</p>
+            <p className="text-sm text-muted-foreground">Images, PDFs, and text files supported</p>
+          </div>
+        </div>
+      )}
+
+      {/* Messages */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        {messages.length === 0 && (
+          <div className="text-center text-muted-foreground mt-20 space-y-2">
+            <p className="text-lg font-medium">Multi-Modal AI Chat</p>
+            <p className="text-sm">Send images for vision analysis, files for context, or just text.</p>
+            <p className="text-xs">Supports: PNG, JPG, GIF, WebP, PDF, TXT, CSV</p>
+          </div>
+        )}
+        {messages.map((message) => (
+          <div
+            key={message.id}
+            className={\`flex \${message.role === "user" ? "justify-end" : "justify-start"}\`}
+          >
+            <div
+              className={\`max-w-[80%] rounded-lg px-4 py-2 text-sm \${
+                message.role === "user"
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-muted"
+              }\`}
+            >
+              {/* Show attachments for user messages */}
+              {message.role === "user" && message.experimental_attachments?.map((att, i) => (
+                <div key={i} className="mb-2">
+                  {att.contentType?.startsWith("image/") ? (
+                    <img
+                      src={att.url}
+                      alt={att.name || "Attachment"}
+                      className="max-w-full max-h-48 rounded border"
+                    />
+                  ) : (
+                    <div className="flex items-center gap-2 text-xs bg-background/20 rounded px-2 py-1">
+                      <span>📎</span>
+                      <span>{att.name}</span>
+                    </div>
+                  )}
+                </div>
+              ))}
+              {message.content}
+            </div>
+          </div>
+        ))}
+        {isLoading && (
+          <div className="flex justify-start">
+            <div className="bg-muted rounded-lg px-4 py-2 text-sm text-muted-foreground">
+              Analyzing...
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Attachment previews */}
+      {attachments.length > 0 && (
+        <div className="border-t px-4 pt-3 pb-1 flex gap-2 flex-wrap">
+          {attachments.map((att, i) => (
+            <div key={i} className="relative group">
+              {att.type.startsWith("image/") ? (
+                <img src={att.url} alt={att.name} className="h-16 w-16 object-cover rounded border" />
+              ) : (
+                <div className="h-16 w-16 rounded border bg-muted flex items-center justify-center text-xs text-muted-foreground">
+                  📄
+                </div>
+              )}
+              <button
+                onClick={() => removeAttachment(i)}
+                className="absolute -top-1.5 -right-1.5 h-4 w-4 rounded-full bg-foreground text-background text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                ×
+              </button>
+              <div className="text-[10px] text-muted-foreground mt-0.5 truncate max-w-[64px]">
+                {att.name}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Input */}
+      <form onSubmit={handleSubmit} className="border-t p-4 flex gap-2">
+        <input
+          type="file"
+          ref={fileInputRef}
+          onChange={(e) => handleFiles(e.target.files)}
+          accept="image/*,.pdf,.txt,.csv,.md"
+          multiple
+          className="hidden"
+        />
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          className="rounded-md border px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+          title="Attach files"
+        >
+          📎
+        </button>
+        <input
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onPaste={handlePaste}
+          placeholder="Type a message or paste an image..."
+          className="flex-1 rounded-md border bg-background px-3 py-2 text-sm"
+        />
+        <button
+          type="submit"
+          disabled={isLoading || (!input?.trim() && attachments.length === 0)}
+          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50"
+        >
+          Send
+        </button>
+      </form>
+    </div>
+  );
+}`,
+      },
+      {
+        path: "app/api/multimodal/route.ts",
+        lang: "typescript",
+        content: `import { streamText } from "ai";
+import { getModel } from "@/lib/model";
+
+export async function POST(req: Request) {
+  const { messages } = await req.json();
+
+  const result = streamText({
+    model: getModel(),
+    system: \`You are a helpful multi-modal AI assistant. You can analyze images, read documents, and have text conversations.
+
+When analyzing images:
+- Describe what you see in detail
+- Answer any specific questions about the image
+- Note relevant text, objects, colors, composition
+
+When reading documents:
+- Summarize the content
+- Answer questions about the document
+- Extract key information as requested
+
+Always be helpful, accurate, and conversational.\`,
+    messages,
+  });
+
+  return result.toUIMessageStreamResponse();
+}`,
+      },
+      {
+        path: "lib/model.ts",
+        lang: "typescript",
+        content: `import { anthropic } from "@ai-sdk/anthropic";
+import { openai } from "@ai-sdk/openai";
+import { google } from "@ai-sdk/google";
+
+export function getModel(id?: string) {
+  const modelId = id || process.env.DEFAULT_MODEL || "anthropic:claude-sonnet-4-5";
+  const [provider, ...rest] = modelId.split(":");
+  const model = rest.join(":");
+  switch (provider) {
+    case "anthropic": return anthropic(model);
+    case "openai": return openai(model);
+    case "google": return google(model);
+    default: return anthropic(model);
+  }
 }`,
       },
     ],

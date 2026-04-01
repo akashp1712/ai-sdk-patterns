@@ -172,6 +172,7 @@ export default function HomePage() {
               category: p.category,
               difficulty: p.difficulty,
               fileCount: p.files.length,
+              badges: p.badges,
             }))}
           />
         </div>

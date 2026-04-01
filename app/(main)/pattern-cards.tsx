@@ -11,6 +11,7 @@ interface PatternSummary {
   category: string;
   difficulty: string;
   fileCount: number;
+  badges?: string[];
 }
 
 const categoryIcons: Record<string, React.ReactNode> = {
@@ -48,6 +49,16 @@ export function PatternCards({ patterns }: { patterns: PatternSummary[] }) {
                 <h3 className="text-[15px] font-semibold text-foreground transition-colors flex-1">
                   {pattern.title}
                 </h3>
+                {pattern.badges?.includes("new") && (
+                  <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
+                    New
+                  </span>
+                )}
+                {pattern.badges?.includes("popular") && (
+                  <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 uppercase tracking-wider">
+                    Popular
+                  </span>
+                )}
                 <ArrowRight className="h-3.5 w-3.5 text-muted-foreground/30 group-hover:text-muted-foreground transition-colors" />
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed mb-3 flex-1">

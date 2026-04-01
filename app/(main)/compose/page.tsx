@@ -20,6 +20,7 @@ export default function ComposePage() {
     category: p.category,
     difficulty: p.difficulty,
     fileCount: p.files.length,
+    badges: p.badges,
   }));
 
   return <ComposeClient patterns={patternSummaries} />;

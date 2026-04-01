@@ -65,13 +65,23 @@ export function PatternsSidebar({ patterns }: { patterns: PatternMeta[] }) {
                       <Link
                         href={href}
                         className={cn(
-                          "block px-3 py-1.5 rounded-md text-[13px] transition-colors truncate",
+                          "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[13px] transition-colors",
                           isActive
                             ? "text-foreground bg-secondary font-medium"
                             : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
                         )}
                       >
-                        {pattern.title}
+                        <span className="truncate">{pattern.title}</span>
+                        {pattern.badges?.includes("new") && (
+                          <span className="text-[9px] font-semibold px-1 py-px rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 uppercase tracking-wider shrink-0">
+                            New
+                          </span>
+                        )}
+                        {pattern.badges?.includes("popular") && (
+                          <span className="text-[9px] font-semibold px-1 py-px rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 uppercase tracking-wider shrink-0">
+                            Popular
+                          </span>
+                        )}
                       </Link>
                     </li>
                   );
