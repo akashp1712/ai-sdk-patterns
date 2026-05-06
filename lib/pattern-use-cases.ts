@@ -150,42 +150,6 @@ export const patternUseCases: Record<string, UseCase[]> = {
       description: "Build assistants that search API documentation, code repositories, and technical guides to provide accurate coding help."
     }
   ],
-  "json-renderer": [
-    {
-      title: "Dashboard Data Visualization",
-      description: "Create systems that transform JSON data into interactive charts, graphs, and dashboard components automatically."
-    },
-    {
-      title: "API Response Display",
-      description: "Build tools that render API responses as user-friendly interfaces, tables, and data visualization components."
-    },
-    {
-      title: "Report Generation Systems",
-      description: "Develop applications that convert structured data into formatted reports with charts, tables, and visual elements."
-    },
-    {
-      title: "Analytics Data Presentation",
-      description: "Create platforms that transform analytics data into interactive visual components and business intelligence displays."
-    }
-  ],
-  "markdown-chat": [
-    {
-      title: "Technical Documentation Chat",
-      description: "Build support chatbots that can display code examples, API documentation, and technical formatting in rich markdown."
-    },
-    {
-      title: "Educational Content Platforms",
-      description: "Create learning environments where AI can display formatted lessons, exercises, and educational content with proper formatting."
-    },
-    {
-      title: "Development Assistant Chat",
-      description: "Develop coding assistants that can display syntax-highlighted code, error messages, and development guidance."
-    },
-    {
-      title: "Content Creation Tools",
-      description: "Build writing assistants that format blog posts, documentation, and articles with proper markdown rendering."
-    }
-  ],
   "reasoning-display": [
     {
       title: "Educational Tutoring Systems",
@@ -202,24 +166,6 @@ export const patternUseCases: Record<string, UseCase[]> = {
     {
       title: "Financial Advisory Tools",
       description: "Create investment advisors that display market analysis reasoning, risk assessment, and recommendation logic."
-    }
-  ],
-  "text-generation": [
-    {
-      title: "Content Marketing Automation",
-      description: "Generate blog posts, social media content, and marketing copy automatically from topic descriptions."
-    },
-    {
-      title: "Product Description Creation",
-      description: "Build tools that generate compelling product descriptions, feature lists, and marketing materials."
-    },
-    {
-      title: "Email Template Generation",
-      description: "Create personalized email templates, newsletters, and marketing communications at scale."
-    },
-    {
-      title: "Documentation Writing Assistants",
-      description: "Develop tools that generate technical documentation, API docs, and user guides from specifications."
     }
   ],
   "image-generation": [
@@ -240,24 +186,6 @@ export const patternUseCases: Record<string, UseCase[]> = {
       description: "Develop tools that generate banners, ads, infographics, and promotional materials for marketing campaigns."
     }
   ],
-  "streaming-object": [
-    {
-      title: "Real-time Data Processing",
-      description: "Build systems that stream and process structured data in real-time, showing progress as data is being generated."
-    },
-    {
-      title: "Live Configuration Generation",
-      description: "Create tools that generate complex configuration files, settings, or data structures with real-time progress display."
-    },
-    {
-      title: "Interactive Form Building",
-      description: "Develop platforms that build forms, surveys, or data structures step-by-step with visible generation process."
-    },
-    {
-      title: "Dynamic Report Creation",
-      description: "Build systems that generate structured reports, analyses, or data visualizations with real-time field-by-field display."
-    }
-  ],
   "code-artifact": [
     {
       title: "API Endpoint Generation",
@@ -276,96 +204,6 @@ export const patternUseCases: Record<string, UseCase[]> = {
       description: "Generate unit tests, integration tests, and test suites from existing code or functionality descriptions."
     }
   ],
-  "routing-agent": [
-    {
-      title: "Customer Service Routing",
-      description: "Build systems that analyze customer inquiries and route them to sales, support, billing, or technical departments."
-    },
-    {
-      title: "Specialized Medical Triage",
-      description: "Create healthcare systems that route patient symptoms to appropriate specialists like cardiologists, neurologists, or general practitioners."
-    },
-    {
-      title: "Financial Advisory Routing",
-      description: "Develop platforms that route financial questions to investment, tax, retirement, or insurance specialists based on query analysis."
-    },
-    {
-      title: "Technical Support Classification",
-      description: "Build helpdesk systems that categorize and route technical issues to hardware, software, network, or security teams."
-    }
-  ],
-  "orchestrator-agent": [
-    {
-      title: "Complex Project Management",
-      description: "Build systems that break down large projects into subtasks, delegate to specialized agents, and coordinate completion."
-    },
-    {
-      title: "Research Report Generation",
-      description: "Create agents that coordinate data collection, analysis, writing, and formatting to generate comprehensive research reports."
-    },
-    {
-      title: "Business Intelligence Analysis",
-      description: "Develop systems that orchestrate data gathering, analysis, visualization, and insight generation for business decision making."
-    },
-    {
-      title: "Multi-disciplinary Problem Solving",
-      description: "Build agents that coordinate legal, financial, technical, and business analysis for complex business challenges."
-    }
-  ],
-  "evaluator-optimizer": [
-    {
-      title: "Content Quality Optimization",
-      description: "Create systems that generate content, evaluate quality against metrics, and automatically improve until standards are met."
-    },
-    {
-      title: "Code Quality Enhancement",
-      description: "Build tools that generate code, evaluate against quality standards, and refactor until performance and maintainability goals are achieved."
-    },
-    {
-      title: "Marketing Copy Optimization",
-      description: "Develop platforms that create marketing materials, test effectiveness metrics, and optimize for conversion rates."
-    },
-    {
-      title: "Design Iteration Systems",
-      description: "Create tools that generate designs, evaluate against UX principles, and refine until usability standards are satisfied."
-    }
-  ],
-  "sequential-workflow": [
-    {
-      title: "Content Pipeline Processing",
-      description: "Build systems that research topics, generate content, edit for quality, and format for publication in sequential steps."
-    },
-    {
-      title: "Data Analysis Workflows",
-      description: "Create pipelines that collect data, clean it, analyze patterns, generate insights, and create visualizations in sequence."
-    },
-    {
-      title: "Document Processing Systems",
-      description: "Develop workflows that extract text, translate languages, summarize content, and format for different audiences."
-    },
-    {
-      title: "Product Development Pipelines",
-      description: "Build systems that gather requirements, design solutions, implement features, test quality, and deploy products sequentially."
-    }
-  ],
-  "parallel-workflow": [
-    {
-      title: "Comprehensive Data Analysis",
-      description: "Build systems that perform sentiment analysis, entity extraction, topic modeling, and summarization simultaneously on the same text."
-    },
-    {
-      title: "Multi-channel Content Processing",
-      description: "Create platforms that analyze text, extract images, generate summaries, and assess quality across different content types in parallel."
-    },
-    {
-      title: "Market Research Automation",
-      description: "Develop tools that conduct competitor analysis, market sizing, trend identification, and opportunity assessment concurrently."
-    },
-    {
-      title: "Risk Assessment Systems",
-      description: "Build platforms that evaluate financial, operational, legal, and reputational risks in parallel for comprehensive analysis."
-    }
-  ],
   "chat-with-citations": [
     {
       title: "Academic Research Assistant",
@@ -382,24 +220,6 @@ export const patternUseCases: Record<string, UseCase[]> = {
     {
       title: "Fact-checking Tools",
       description: "Build platforms that verify claims and provide evidence-backed answers with source attribution and credibility scores."
-    }
-  ],
-  "form-generator": [
-    {
-      title: "Survey Creation Tools",
-      description: "Build platforms that generate custom surveys, questionnaires, and feedback forms from natural language descriptions."
-    },
-    {
-      title: "Application Form Systems",
-      description: "Create tools that generate job applications, loan applications, or registration forms with proper validation."
-    },
-    {
-      title: "Data Collection Interfaces",
-      description: "Develop systems that create custom data entry forms for research, customer feedback, or operational data collection."
-    },
-    {
-      title: "Workflow Form Builders",
-      description: "Build platforms that generate multi-step forms for business processes, onboarding, or approval workflows."
     }
   ],
   "mcp-client": [
@@ -456,24 +276,6 @@ export const patternUseCases: Record<string, UseCase[]> = {
       description: "Develop assistants that analyze medical images, lab results, or scientific diagrams with expert-level context."
     }
   ],
-  "csv-editor": [
-    {
-      title: "Financial Data Analysis",
-      description: "Build tools that clean, transform, and analyze financial spreadsheets with AI-powered insights and suggestions."
-    },
-    {
-      title: "Sales Data Processing",
-      description: "Create systems that process sales data, generate reports, identify trends, and suggest optimization strategies."
-    },
-    {
-      title: "Research Data Management",
-      description: "Develop platforms that clean experimental data, perform statistical analysis, and generate research summaries."
-    },
-    {
-      title: "Inventory Management Tools",
-      description: "Build systems that analyze inventory data, suggest reorder points, and optimize stock levels with AI assistance."
-    }
-  ]
 };
 
 export function getPatternUseCases(patternId: string): UseCase[] {

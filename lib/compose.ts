@@ -223,6 +223,7 @@ function generatePackageJson(selected: PatternMeta[]): string {
     "lucide-react": "^0.562.0",
     "better-sqlite3": "^11.0.0",
     "@modelcontextprotocol/sdk": "^1.0.0",
+    "@mastra/core": "^1.27.0",
   };
   for (const [pkg, version] of Object.entries(optionalDeps)) {
     if (allContent.includes(`from "${pkg}"`)) {

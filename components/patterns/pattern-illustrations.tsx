@@ -142,37 +142,6 @@ export function RagPipelineIll() {
   );
 }
 
-export function JsonRendererIll() {
-  return (
-    <IllustrationCanvas>
-      <div className="flex items-center gap-1.5">
-        <MiniCard className="px-1.5 py-1 font-mono text-[7px] text-muted-foreground/40">
-          {"{ }"}
-        </MiniCard>
-        <ArrowConnector color="amber" />
-        <MiniCard className="border-amber-500/30 bg-amber-500/10 p-1.5">
-          <div className="h-2 w-8 rounded-sm bg-amber-500/15 mb-1" />
-          <div className="h-2 w-12 rounded-sm bg-amber-500/15" />
-        </MiniCard>
-      </div>
-    </IllustrationCanvas>
-  );
-}
-
-export function MarkdownChatIll() {
-  return (
-    <IllustrationCanvas>
-      <MiniCard className="w-full max-w-[130px] p-2 space-y-1">
-        <div className="h-1.5 w-10 rounded-full bg-foreground/12" />
-        <SkeletonLines count={2} />
-        <MiniCard className="bg-sky-500/10 border-sky-500/20 px-1.5 py-1 mt-1">
-          <SkeletonLines count={2} color="sky" widths={["w-16", "w-10"]} />
-        </MiniCard>
-      </MiniCard>
-    </IllustrationCanvas>
-  );
-}
-
 export function ReasoningDisplayIll() {
   return (
     <IllustrationCanvas>
@@ -183,20 +152,6 @@ export function ReasoningDisplayIll() {
         </MiniCard>
         <MiniCard className="px-2 py-1.5">
           <SkeletonLines count={2} />
-        </MiniCard>
-      </div>
-    </IllustrationCanvas>
-  );
-}
-
-export function TextGenerationIll() {
-  return (
-    <IllustrationCanvas>
-      <div className="flex items-center gap-1.5">
-        <NodeCircle label="AI" color="sky" size="md" />
-        <ArrowConnector color="sky" />
-        <MiniCard className="px-2 py-1.5 max-w-[80px]">
-          <SkeletonLines count={3} color="sky" pulse />
         </MiniCard>
       </div>
     </IllustrationCanvas>
@@ -217,20 +172,6 @@ export function ImageGenerationIll() {
   );
 }
 
-export function StreamingObjectIll() {
-  return (
-    <IllustrationCanvas>
-      <MiniCode
-        lines={[
-          { key: "title", value: '"..."', keyColor: "sky", valueColor: "emerald" },
-          { key: "tags", value: "[...]", keyColor: "sky", valueColor: "emerald" },
-          { key: "body", value: "█", keyColor: "sky", valueColor: "emerald" },
-        ]}
-      />
-    </IllustrationCanvas>
-  );
-}
-
 export function CodeArtifactIll() {
   return (
     <IllustrationCanvas>
@@ -238,90 +179,6 @@ export function CodeArtifactIll() {
         <WindowChrome>
           <SkeletonLines count={4} color="violet" />
         </WindowChrome>
-      </div>
-    </IllustrationCanvas>
-  );
-}
-
-export function RoutingAgentIll() {
-  return (
-    <IllustrationCanvas>
-      <div className="flex items-center gap-2">
-        <NodeCircle label="?" size="md" />
-        <ArrowConnector />
-        <NodeCircle label="R" size="md" />
-        <FanOutConnector count={3} />
-        <div className="flex flex-col gap-1">
-          <Pill mono>code</Pill>
-          <Pill mono>math</Pill>
-          <Pill mono>write</Pill>
-        </div>
-      </div>
-    </IllustrationCanvas>
-  );
-}
-
-export function OrchestratorAgentIll() {
-  return (
-    <IllustrationCanvas>
-      <div className="flex flex-col items-center gap-1.5">
-        <NodeCircle label="O" size="md" />
-        <div className="flex items-center gap-2">
-          <NodeCircle label="A" size="sm" />
-          <NodeCircle label="B" size="sm" />
-          <NodeCircle label="C" size="sm" />
-        </div>
-        <ArrowConnector />
-        <Pill mono>merged</Pill>
-      </div>
-    </IllustrationCanvas>
-  );
-}
-
-export function EvaluatorOptimizerIll() {
-  return (
-    <IllustrationCanvas>
-      <StepChain
-        steps={[
-          { label: "G", color: "sky" },
-          { label: "E", color: "amber" },
-          { label: "O", color: "emerald" },
-        ]}
-        label="generate → evaluate → optimize"
-      />
-    </IllustrationCanvas>
-  );
-}
-
-export function SequentialWorkflowIll() {
-  return (
-    <IllustrationCanvas>
-      <StepChain
-        steps={[
-          { label: "1", color: "sky" },
-          { label: "2", color: "sky" },
-          { label: "3", color: "sky" },
-          { label: "4", color: "sky" },
-        ]}
-        label="research → summarize → translate → format"
-      />
-    </IllustrationCanvas>
-  );
-}
-
-export function ParallelWorkflowIll() {
-  return (
-    <IllustrationCanvas>
-      <div className="flex items-center gap-2">
-        <NodeCircle label="IN" size="md" />
-        <FanOutConnector count={3} />
-        <div className="flex flex-col gap-1">
-          <Pill mono>task A</Pill>
-          <Pill mono>task B</Pill>
-          <Pill mono>task C</Pill>
-        </div>
-        <ArrowConnector />
-        <NodeCircle label="M" size="md" />
       </div>
     </IllustrationCanvas>
   );
@@ -343,39 +200,6 @@ export function ChatWithCitationsIll() {
   );
 }
 
-export function FormGeneratorIll() {
-  return (
-    <IllustrationCanvas>
-      <div className="flex items-center gap-1.5">
-        <MiniCard className="px-2 py-1.5 text-[7px] text-muted-foreground max-w-[55px] leading-tight">
-          Describe form...
-        </MiniCard>
-        <ArrowConnector />
-        <MiniCard className="p-2 space-y-1">
-          <div className="h-2 w-12 rounded bg-foreground/10" />
-          <div className="h-3 w-16 rounded border border-foreground/10" />
-          <div className="h-2 w-10 rounded bg-foreground/10" />
-          <div className="h-3 w-16 rounded border border-foreground/10" />
-        </MiniCard>
-      </div>
-    </IllustrationCanvas>
-  );
-}
-
-export function CsvEditorIll() {
-  return (
-    <IllustrationCanvas>
-      <MiniCard className="p-1.5">
-        <div className="grid grid-cols-3 gap-px">
-          {Array.from({ length: 9 }).map((_, i) => (
-            <div key={i} className="h-2.5 w-7 rounded-sm bg-foreground/8" />
-          ))}
-        </div>
-      </MiniCard>
-    </IllustrationCanvas>
-  );
-}
-
 export function DurableChatAgentIll() {
   return (
     <IllustrationCanvas>
@@ -387,56 +211,6 @@ export function DurableChatAgentIll() {
           <Pill color="emerald" mono>search()</Pill>
         </div>
       </div>
-    </IllustrationCanvas>
-  );
-}
-
-export function WorkflowApprovalIll() {
-  return (
-    <IllustrationCanvas>
-      <div className="flex items-center gap-2">
-        <NodeCircle label="AI" size="md" />
-        <ArrowConnector />
-        <MiniCard className="px-2 py-1 text-[7px] text-amber-500/80 border-amber-500/30 bg-amber-500/15">
-          ⏸️ Paused
-        </MiniCard>
-        <ArrowConnector />
-        <div className="flex gap-1.5">
-          <Pill color="emerald">✓ Approve</Pill>
-          <Pill color="red">✕ Reject</Pill>
-        </div>
-      </div>
-    </IllustrationCanvas>
-  );
-}
-
-export function ScheduledWorkflowIll() {
-  return (
-    <IllustrationCanvas>
-      <div className="flex items-center gap-2">
-        <NodeCircle label="Start" size="sm" />
-        <ArrowConnector />
-        <MiniCard className="px-2 py-1 text-[7px] text-blue-500/80 border-blue-500/30 bg-blue-500/15">
-          ⏰ Sleep
-        </MiniCard>
-        <ArrowConnector />
-        <NodeCircle label="Run" size="sm" />
-      </div>
-    </IllustrationCanvas>
-  );
-}
-
-export function RefinementLoopIll() {
-  return (
-    <IllustrationCanvas>
-      <StepChain
-        steps={[
-          { label: "G", color: "sky" },
-          { label: "E", color: "amber" },
-          { label: "O", color: "emerald" },
-        ]}
-        label="generate → evaluate → refine"
-      />
     </IllustrationCanvas>
   );
 }
@@ -504,6 +278,154 @@ export function MultiModalChatIll() {
 // ── Registry ────────────────────────────────────────────────────────
 // Add new pattern illustrations here. Key = pattern id from lib/patterns.ts
 
+// ── Mastra Pattern Illustrations ─────────────────────────────────────────────
+
+export function MastraAgentIll() {
+  return (
+    <IllustrationCanvas>
+      <div className="flex items-center gap-3">
+        <NodeCircle label="Agent" size="lg" color="sky" />
+        <ArrowConnector />
+        <div className="flex flex-col gap-1">
+          <Pill color="emerald" mono>generate()</Pill>
+          <Pill color="amber" mono>stream()</Pill>
+        </div>
+      </div>
+    </IllustrationCanvas>
+  );
+}
+
+export function MastraToolIll() {
+  return (
+    <IllustrationCanvas>
+      <MiniCode
+        lines={[
+          { key: "id", value: '"search"', keyColor: "sky", valueColor: "emerald" },
+          { key: "input", value: "z.object()", keyColor: "sky", valueColor: "amber" },
+          { key: "execute", value: "async →", keyColor: "sky", valueColor: "red" },
+        ]}
+      />
+    </IllustrationCanvas>
+  );
+}
+
+export function MastraWorkflowIll() {
+  return (
+    <IllustrationCanvas>
+      <StepChain
+        steps={[
+          { label: "1", color: "sky" },
+          { label: "2", color: "violet" },
+          { label: "3", color: "emerald" },
+        ]}
+        label="fetch → summarize → format"
+      />
+    </IllustrationCanvas>
+  );
+}
+
+export function MastraMemoryIll() {
+  return (
+    <IllustrationCanvas>
+      <div className="flex items-center gap-2">
+        <NodeCircle label="🧠" size="md" />
+        <div className="flex flex-col gap-1">
+          <Pill color="rose" mono>history</Pill>
+          <Pill color="violet" mono>working</Pill>
+          <Pill color="cyan" mono>semantic</Pill>
+        </div>
+      </div>
+    </IllustrationCanvas>
+  );
+}
+
+export function MastraRagIll() {
+  return (
+    <IllustrationCanvas>
+      <div className="flex items-center gap-2">
+        <MiniSearchBar color="emerald" />
+        <ArrowConnector />
+        <div className="flex flex-col gap-0.5">
+          <Pill color="emerald" mono>embed</Pill>
+          <Pill color="sky" mono>search</Pill>
+        </div>
+      </div>
+    </IllustrationCanvas>
+  );
+}
+
+export function MastraMultiAgentIll() {
+  return (
+    <IllustrationCanvas>
+      <div className="flex items-center gap-2">
+        <NodeCircle label="S" size="md" color="amber" />
+        <FanOutConnector count={2} />
+        <div className="flex flex-col gap-1">
+          <NodeCircle label="R" size="sm" color="sky" />
+          <NodeCircle label="W" size="sm" color="emerald" />
+        </div>
+      </div>
+    </IllustrationCanvas>
+  );
+}
+
+export function MastraHumanInLoopIll() {
+  return (
+    <IllustrationCanvas>
+      <StepChain
+        steps={[
+          { label: "1", color: "sky" },
+          { label: "⏸", color: "amber" },
+          { label: "3", color: "emerald" },
+        ]}
+        label="prepare → approve → execute"
+      />
+    </IllustrationCanvas>
+  );
+}
+
+export function MastraObservationalIll() {
+  return (
+    <IllustrationCanvas>
+      <div className="flex items-center gap-2">
+        <NodeCircle label="💬" size="sm" />
+        <ArrowConnector />
+        <NodeCircle label="📝" size="sm" />
+        <ArrowConnector />
+        <Pill color="rose" mono>observe</Pill>
+      </div>
+    </IllustrationCanvas>
+  );
+}
+
+export function MastraStructuredOutputIll() {
+  return (
+    <IllustrationCanvas>
+      <MiniCode
+        lines={[
+          { key: "name", value: "string", keyColor: "sky", valueColor: "emerald" },
+          { key: "email", value: "email", keyColor: "sky", valueColor: "amber" },
+          { key: "topics", value: "string[]", keyColor: "sky", valueColor: "violet" },
+        ]}
+      />
+    </IllustrationCanvas>
+  );
+}
+
+export function MastraGuardrailsIll() {
+  return (
+    <IllustrationCanvas>
+      <div className="flex items-center gap-2">
+        <Pill color="red" mono>input</Pill>
+        <ArrowConnector />
+        <NodeCircle label="🛡" size="md" />
+        <ArrowConnector />
+        <Pill color="emerald" mono>output</Pill>
+      </div>
+    </IllustrationCanvas>
+  );
+}
+
 const illustrationMap: Record<string, React.ReactNode> = {
   "streaming-chat": <StreamingChatIll />,
   "structured-output": <StructuredOutputIll />,
@@ -513,28 +435,24 @@ const illustrationMap: Record<string, React.ReactNode> = {
   "web-search": <WebSearchIll />,
   "human-in-the-loop": <HumanInTheLoopIll />,
   "rag-pipeline": <RagPipelineIll />,
-  "json-renderer": <JsonRendererIll />,
-  "markdown-chat": <MarkdownChatIll />,
   "reasoning-display": <ReasoningDisplayIll />,
-  "text-generation": <TextGenerationIll />,
   "image-generation": <ImageGenerationIll />,
-  "streaming-object": <StreamingObjectIll />,
   "code-artifact": <CodeArtifactIll />,
-  "routing-agent": <RoutingAgentIll />,
-  "orchestrator-agent": <OrchestratorAgentIll />,
-  "evaluator-optimizer": <EvaluatorOptimizerIll />,
-  "sequential-workflow": <SequentialWorkflowIll />,
-  "parallel-workflow": <ParallelWorkflowIll />,
   "chat-with-citations": <ChatWithCitationsIll />,
-  "form-generator": <FormGeneratorIll />,
-  "csv-editor": <CsvEditorIll />,
   "durable-chat-agent": <DurableChatAgentIll />,
-  "workflow-approval": <WorkflowApprovalIll />,
-  "scheduled-workflow": <ScheduledWorkflowIll />,
-  "refinement-loop": <RefinementLoopIll />,
   "mcp-client": <MCPClientIll />,
   "text-to-sql": <TextToSQLIll />,
   "multimodal-chat": <MultiModalChatIll />,
+  "mastra-agent-basic": <MastraAgentIll />,
+  "mastra-tool": <MastraToolIll />,
+  "mastra-workflow": <MastraWorkflowIll />,
+  "mastra-memory": <MastraMemoryIll />,
+  "mastra-rag": <MastraRagIll />,
+  "mastra-multi-agent": <MastraMultiAgentIll />,
+  "mastra-human-in-loop": <MastraHumanInLoopIll />,
+  "mastra-observational-memory": <MastraObservationalIll />,
+  "mastra-structured-output": <MastraStructuredOutputIll />,
+  "mastra-agent-guardrails": <MastraGuardrailsIll />,
 };
 
 export function getPatternIllustration(patternId: string): React.ReactNode {

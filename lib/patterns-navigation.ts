@@ -29,7 +29,6 @@ export const patternsNavigation: NavSection[] = [
     title: "Advanced Patterns",
     items: [
       { title: "Multi-Step Agent", href: "/patterns/multi-step-agent" },
-      { title: "Multi-Agent", href: "/patterns/multi-agent" },
       { title: "RAG Pipeline", href: "/patterns/rag-pipeline" },
       { title: "Human in the Loop", href: "/patterns/human-in-the-loop" },
       { title: "MCP Client Agent", href: "/patterns/mcp-client" },

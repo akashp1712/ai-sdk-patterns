@@ -11,8 +11,10 @@ import { cn } from "@/lib/utils";
 
 const navLinks = [
   { href: "/patterns", label: "Patterns" },
+  { href: "/mastra", label: "Mastra", badge: "new" },
+  { href: "/harness", label: "Harness", badge: "new" },
   { href: "/compose", label: "Compose" },
-];
+] as const;
 
 export function Header() {
   const pathname = usePathname();
@@ -48,13 +50,18 @@ export function Header() {
               key={link.href}
               href={link.href}
               className={cn(
-                "px-3.5 py-2 rounded-md text-[14px] transition-colors",
+                "px-3.5 py-2 rounded-md text-[14px] transition-colors flex items-center gap-1.5",
                 pathname.startsWith(link.href)
                   ? "text-foreground font-medium"
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
               {link.label}
+              {"badge" in link && link.badge && (
+                <span className="text-[9px] font-semibold uppercase tracking-wider px-1.5 py-px rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400/80">
+                  {link.badge}
+                </span>
+              )}
             </Link>
           ))}
           <a
@@ -77,7 +84,7 @@ export function Header() {
         </nav>
 
         {/* Mobile nav toggle */}
-        <div className="flex sm:hidden items-center gap-2">
+        <div className="flex sm:hidden items-center gap-1">
           <ThemeToggle />
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -99,13 +106,18 @@ export function Header() {
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
                 className={cn(
-                  "px-3 py-2.5 rounded-md text-sm transition-colors",
+                  "px-3 py-2.5 rounded-md text-sm transition-colors flex items-center gap-2",
                   pathname.startsWith(link.href)
                     ? "text-foreground font-medium bg-secondary"
                     : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
                 )}
               >
                 {link.label}
+                {"badge" in link && link.badge && (
+                  <span className="text-[9px] font-semibold uppercase tracking-wider px-1.5 py-px rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400/80">
+                    {link.badge}
+                  </span>
+                )}
               </Link>
             ))}
             <a

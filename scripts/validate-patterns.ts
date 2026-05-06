@@ -10,9 +10,14 @@
 
 import { patterns } from "../lib/patterns";
 import { composePatterns } from "../lib/compose";
-import { mkdirSync, writeFileSync, rmSync, existsSync } from "fs";
+import { mkdirSync, writeFileSync, readFileSync, rmSync, existsSync } from "fs";
 import { dirname, join } from "path";
 import { execSync } from "child_process";
+
+const AMBIENT_STUBS = readFileSync(
+  join(process.cwd(), "scripts/pattern-type-stubs.d.ts"),
+  "utf-8"
+);
 
 const TEMP_ROOT = join(process.cwd(), ".pattern-validate-tmp");
 
@@ -71,6 +76,7 @@ function validateSinglePattern(pattern: (typeof patterns)[0]): string[] {
   // Write shared stubs
   writeFile(dir, "lib/model.ts", MODEL_STUB);
   writeFile(dir, "lib/utils.ts", UTILS_STUB);
+  writeFile(dir, "__stubs.d.ts", AMBIENT_STUBS);
 
   // Write pattern files
   for (const file of pattern.files) {
@@ -116,6 +122,7 @@ function validateComposed(): string[] {
   // Also need stubs for composed app since it references real packages
   writeFile(dir, "lib/model.ts", MODEL_STUB);
   writeFile(dir, "lib/utils.ts", UTILS_STUB);
+  writeFile(dir, "__stubs.d.ts", AMBIENT_STUBS);
 
   try {
     execSync("npx tsc --noEmit --pretty 2>&1", {

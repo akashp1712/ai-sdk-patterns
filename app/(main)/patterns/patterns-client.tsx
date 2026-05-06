@@ -92,6 +92,27 @@ export function PatternsClient({ patterns }: { patterns: PatternMeta[] }) {
         />
       </div>
 
+      {/* Mastra section callout — shown when viewing All or Agents */}
+      {(activeCategory === "all" || activeCategory === "agents") && !search && (
+        <div className="mb-6 rounded-xl border border-border bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-emerald-500/5 p-5">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-sm font-semibold mb-1">Mastra Agent Patterns</h2>
+              <p className="text-xs text-muted-foreground">
+                AI SDK provides the primitives. Mastra builds production agents on top — tools, memory, workflows, guardrails.
+              </p>
+            </div>
+            <Link
+              href="/mastra"
+              className="shrink-0 flex items-center gap-1.5 rounded-md bg-foreground px-3 py-1.5 text-xs font-medium text-background hover:opacity-90 transition-opacity"
+            >
+              View Mastra Patterns
+              <ArrowRight className="h-3 w-3" />
+            </Link>
+          </div>
+        </div>
+      )}
+
       {/* Pattern grid */}
       {filtered.length === 0 ? (
         <div className="text-center py-20">
